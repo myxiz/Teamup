@@ -1,2 +1,7 @@
 {
+  "users": {
+    "bolin": {
+      "passwordHash": "$2b$10$ZXJuezIT/tKA8gV1mg7SLu9saNPRDUiqRYEaqmtXrpKbwtYsGF5Va"
+    }
+  }
 }
