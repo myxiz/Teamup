@@ -1,2 +1,7 @@
 {
+  "users": {
+    "max": {
+      "passwordHash": "$2b$10$iK4H9xlWy2ndEWMYp6ZA3.y8zs.zM4YfQh5uI.1yxUjBhNBscWy9K"
+    }
+  }
 }
