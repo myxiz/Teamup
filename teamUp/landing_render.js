@@ -103,7 +103,6 @@ async function handleRenderWall(event) {
         method: 'get',
         url: "http://api.icndb.com/jokes/random?limitTo=[nerdy]"
     })
-    console.log(result);
     $('#joke').append("Do you know that: " + result.data.value.joke);
 }
 
