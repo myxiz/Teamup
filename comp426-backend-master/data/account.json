@@ -1,12 +1,10 @@
 {
   "users": {
-<<<<<<< HEAD
     "bolin": {
       "passwordHash": "$2b$10$ZXJuezIT/tKA8gV1mg7SLu9saNPRDUiqRYEaqmtXrpKbwtYsGF5Va"
-=======
+    },
     "max": {
       "passwordHash": "$2b$10$iK4H9xlWy2ndEWMYp6ZA3.y8zs.zM4YfQh5uI.1yxUjBhNBscWy9K"
->>>>>>> 9099e04e199985183f2a208a5f2f9cc50181230f
     }
   }
 }
