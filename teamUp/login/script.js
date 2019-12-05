@@ -16,11 +16,12 @@ $(function() {
         url: 'http://localhost:3000/account/login',
         type: 'POST',
         data,
-        xhrFields: {
-            withCredentials: true,
-        },
+        // xhrFields: {
+        //     withCredentials: true,
+        // },
       }).then(() => {
         $message.html('<span class="has-text-success">Success! You are now logged in.</span>');
+        window.location.replace("http://localhost:3001/index.html")
       }).catch(() => {
         $message.html('<span class="has-text-danger">Something went wrong and you were not logged in. Check your email and password and your internet connection.</span>');
       });
