@@ -39,7 +39,7 @@ router.post('/login', async function (req, res) {
     return;
   }
 
-  const name = req.body.name.toLowerCase();
+  const name = req.body.name.toLowerCase().split('.')[0];
   const pass = req.body.pass;
 
   let user = accountStore.get(`users.${name}`);
@@ -72,7 +72,7 @@ router.post('/create', function (req, res) {
     return;
   }
 
-  const name = req.body.name.toLowerCase();
+  const name =  req.body.name.toLowerCase().split('.')[0];
   const pass = req.body.pass;
 
 
@@ -85,7 +85,12 @@ router.post('/create', function (req, res) {
   bcrypt.hash(pass, saltRounds, (err, hash) => {
     accountStore.set(`users.${name}`, {
       passwordHash: hash,
-      data: req.body.data
+      data: { firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        gender:req.body.gender, 
+        year:req.body.year,
+        bio :req.body.bio,
+        major:req.body.major}
     });
     res.send({data: userFilter(accountStore.get(`users.${name}`)), status: 'Successfully made account'});
   });

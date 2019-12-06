@@ -1,9 +1,74 @@
 {
+  "users['test2@email": {
+    "com']": {
+      "passwordHash": "$2b$10$QXx5a0MQdrbuerDyk4dk7.uSTzXncfSsJq5rQNGvDkX/wghbMlAcS",
+      "data": {
+        "firstname": "Mengyu",
+        "lastname": "Zhong",
+        "gender": "Female",
+        "year": "Freshman",
+        "bio": "1234",
+        "major": "1234"
+      }
+    }
+  },
+  "users['test3@email": {
+    "com']": {
+      "passwordHash": "$2b$10$pAivwsivYJXPo1RDRZOZG.EG6Do844oOzdgNl4iG52d8lMvda9sjC",
+      "data": {
+        "firstname": "Mengyu",
+        "lastname": "Zhong",
+        "gender": "Female",
+        "year": "Freshman",
+        "bio": "1234",
+        "major": "1234"
+      }
+    }
+  },
   "users": {
-    "bolin": {
-      "passwordHash": "$2b$10$ZXJuezIT/tKA8gV1mg7SLu9saNPRDUiqRYEaqmtXrpKbwtYsGF5Va",
-    "max": {
-      "passwordHash": "$2b$10$iK4H9xlWy2ndEWMYp6ZA3.y8zs.zM4YfQh5uI.1yxUjBhNBscWy9K"
+    "test3@emailcom": {
+      "passwordHash": "$2b$10$bKT2W1lcppF7Pg9hG2t62ukhMfVieOvgW2oxgjwBJEHn4S1dFeZF2",
+      "data": {
+        "firstname": "Mengyu",
+        "lastname": "Zhong",
+        "gender": "Female",
+        "year": "Freshman",
+        "bio": "1234",
+        "major": "1234"
+      }
+    },
+    "test1@emailcom": {
+      "passwordHash": "$2b$10$YYpfW2T7UNEdfCQ3g9n06.6VG67veUkPa5YPf1cY.sEzj6BzeKC16",
+      "data": {
+        "firstname": "Mengyu",
+        "lastname": "Zhong",
+        "gender": "Female",
+        "year": "Freshman",
+        "bio": "1234",
+        "major": "1234"
+      }
+    },
+    "test4@email": {
+      "passwordHash": "$2b$10$rlJXGijRQbclhvaeJ1Glu.ICvzW1.6g6JCnST.E1Y47M3/qWXGCOa",
+      "data": {
+        "firstname": "Mengyu",
+        "lastname": "Zhong",
+        "gender": "Female",
+        "year": "Freshman",
+        "bio": "1234",
+        "major": "1234"
+      }
+    },
+    "mengyu_zhong@sina": {
+      "passwordHash": "$2b$10$98Zw4PQRVi8Kz/Nc9i3HteBH0.5MLIOTLwPAflTistL.h4Rx4uB.W",
+      "data": {
+        "firstname": "Mengyu",
+        "lastname": "Zhong",
+        "gender": "female",
+        "year": "graduate",
+        "bio": "An exchange student who is looking for a good team",
+        "major": "IT&Cognition"
+      }
     }
   }
 }
