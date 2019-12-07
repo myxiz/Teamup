@@ -1,5 +1,5 @@
 $(document).ready(async () => {
-    $('#homePage').append(renderHomePage());
+    //$('#homePage').append(renderHomePage());
     $('#content').on("click", "#login", handleRenderLogin);
     $("#signUp").on("click",handleRenderSignUp);
     $('#navBar').on("click", "#wall", handleRenderWall);
