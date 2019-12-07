@@ -18,6 +18,13 @@ html, body{
     min-height: 40px;
 }
 
+#signup{
+    background-color: #7BAFD4;
+}
+
+#signupButton{
+    background-color: #7BAFD4;
+}
 .navbar-brand>img{
     max-height: 40px;
     width: auto;
@@ -185,6 +192,7 @@ h1{
     width: 100%;
     margin-bottom: 20px;
 }
+
 
 .loginbox input[type="text"], input[type="password"]
 {

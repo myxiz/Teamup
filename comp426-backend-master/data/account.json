@@ -69,6 +69,14 @@
         "bio": "An exchange student who is looking for a good team",
         "major": "IT&Cognition"
       }
+    },
+    "bolin": {
+      "passwordHash": "$2b$10$EJrL3e4.D8WCk8EhpvZhh.WkegvpvzCjLDGwKJZW.G94BotSmh.S.",
+      "data": {}
+    },
+    "bolinz": {
+      "passwordHash": "$2b$10$zCEeJGzMYuYufQeof2UcMu1mGfRkcUtoVtXSPNLg8rFq./sFueQYy",
+      "data": {}
     }
   }
 }

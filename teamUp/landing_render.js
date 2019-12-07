@@ -1,9 +1,11 @@
 $(document).ready(async () => {
-    //$('#homePage').append(renderHomePage());
+    $('#homePage').append(renderHomePage());
     $('#content').on("click", "#login", handleRenderLogin);
-    $("#signUp").on("click",handleRenderSignUp);
+    $("#signup").on("click",handleRenderSignUp);
     $('#navBar').on("click", "#wall", handleRenderWall);
     $('#navBar').on("click", "#home", handleRenderHome);
+    $('#content').on("click", "#noAccount", handleRenderSignUp);
+    $('#content').on("click", "#signupButton", handleSignup);
 
 })
 
@@ -22,12 +24,13 @@ function renderHomePage() {
         <div class="container">
             <div class="btn-toolbar">
                 <button class="btn btn-dark btn-lg center-block mr-5 w-25" id="login">Student Login</button>
-                <button class="btn btn-light btn-lg center-block ml-5 w-25" id="signUp">Sign Up</button>
+                <button class="btn btn-info btn-lg center-block ml-5 w-25" id="signup">Sign Up</button>
             </div>
         </div>`
 }
 
 function handleRenderHome(event){
+    event.preventDefault();
     $('#loginPage').empty();
     $('#wallPage').empty();
     $('#homePage').empty();
@@ -45,7 +48,7 @@ function renderLoginPage() {
         <p>Password</p>
         <input type="password" name="pass" placeholder="Enter Password">
         <button class="btn-dark btn-xs" type="submit" >Login</button>
-        <button class="btn btn-link">Don't have an account?</a>
+        <button class="btn btn-link" id="noAccount">Don't have an account?</a>
         <div class="field">
             <div class="control">
                 <p id="message"></p>
@@ -56,84 +59,115 @@ function renderLoginPage() {
 }
 
 function handleRenderLogin(event) {
+    event.preventDefault();
     $('#loginPage').empty();
     $('#wallPage').empty();
     $('#homePage').empty();
     $('#loginPage').append(renderLoginPage());
 }
+
+// render sign up page
+function renderSignUpPage() {
+    return  `
+    <br>
+    <form class="form-horizontal" role="form" id="signupForm">
+    <div class="form-row">
+        <div class="col form-group">
+            <label>First name </label>   
+              <input type="text" class="form-control" name="firstName">
+        </div> <!-- form-group end.// -->
+        <div class="col form-group">
+            <label>Last name</label>
+              <input type="text" class="form-control" name="lastName">
+        </div> <!-- form-group end.// -->
+
+        <div class="col form-group">
+                <label>Username</label>
+                <input type="usernmae" class="form-control" name="userName">
+            </div> <!-- form-group end.// -->
+    </div> <!-- form-row end.// -->
+
+    <div class="form-group">
+            <label>Email address</label>
+            <input type="email" class="form-control" name="email">
+            <small class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        
+    <div class="form-group">
+            <label class="col-sm-3 control-label">
+                <input class="form-control" type="radio" name="gender" value="Male">
+                <span class="form-check-label"> Male </span>
+            </label>
+            <label class="col-sm-3 control-label">
+                <input class="form-control" type="radio" name="gender" value="Female">
+                <span class="form-check-label"> Female</span>
+            </label>
+        </div><!-- form-group end.// -->
+    <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>Major</label>
+          <input type="text" class="form-control" name="major">
+        </div> <!-- form-group end.// -->
+        <div class="form-group col-md-6">
+          <label>Year</label>
+          <select id="inputState" class="form-control" name="year">
+            <option> Choose...</option>
+              <option>Freshman</option>
+              <option>Sophomore</option>
+              <option selected="">Junior</option>
+              <option>Senior</option>
+          </select>
+        </div> <!-- form-group end.// -->
+    </div> <!-- form-row.// -->
+
+    <div class="form-group">
+        <label for="bio">Description/Bio</label>
+        <textarea class="form-control" rows="2" id="bio" name="bio"></textarea>
+        <small class="form-text text-muted">Be creative, be yourself ;)</small>
+
+      </div>
+
+    <div class="form-group">
+        <label>Create password</label>
+        <input class="form-control" type="password2" name="password">
+    </div> <!-- form-group end.// -->  
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block" id="signupButton"> Sign up  </button>
+    </div> <!-- form-group// -->      
+    <small class="text-muted">By clicking the 'Sign Up' button, you confirm that you accept our <br> Terms of use and Privacy Policy.</small>                                          
+</form>`
+}
+
 function handleRenderSignUp(event) {
+    event.preventDefault();
     $('#loginPage').empty();
     $('#wallPage').empty();
     $('#homePage').empty();
     $('#loginPage').append(renderSignUpPage());
 }
 
-// render sign up page
-function renderSignUpPage() {
-    return  `   
-    <div class="wrapper wrapper--w680">
-    <div class="card card-1">
-    <div class="card-heading"></div>
-    <div class="card-body">
-        <!-- <h2 class="title">Registration Info</h2> -->
-        <form action="http://localhost:3000/account/create" method="POST">
-            <div class="row row-space">
-                <div class="col--2">
-                    <div class="input-group">
-                        <input class="input--style-1" type="text" placeholder="FIRST NAME" name="firstname" required>
-                    </div>
-                </div>
-                <div class="col--2">
-                    <div class="input-group">
-                        <input class="input--style-1" type="text" placeholder="LAST NAME" name="lastname" required>
-                    </div>
-                </div>
-                
-            </div>
-            <div class="row row-space">
-                <div class="col--2">
-                   <div class="input-group">
-                    <input class="input--style-1" type="text" placeholder="YEAR" name="year" required>
-                    </div>
-            
-                    
-                </div>
-            
-                <div class="col--2">
-                    <div class="input-group">
-                    <input class="input--style-1" type="text" placeholder="GENDER" name="gender" required>
-                    </div>
-                </div>
-            </div>
-            <div class="input-group">
-                    <input class="input--style-1" type="email" placeholder="E-Mail" name="name" required>
-                </div>
-            <div class="input-group">
-                <input class="input--style-1" type="password" placeholder="PASSWORD" name="pass" required>
-            </div>
-            <!-- <div class="input-group">
-                <input class="input--style-1" type="password" placeholder="REPEATE PASSWORD" name="repassword">
-            </div> -->
-            <div class="input-group">
-                <input class="input--style-1" type="text" placeholder="SKILLSETS" name="skillsets" required>
-            </div>
-            <div class="input-group">
-                <input class="input--style-1" type="text" placeholder="INTRODUCE YOURSELF" name="bio" required>
-            </div>
-            
-            
-            <div class="input-group">
-                <input class="input--style-1" type="text" placeholder="MAJOR" name="major" required>
-            </div>
-        
-            <div class="p-t-20">
-                <button class="btn btn--radius btn--blue" type="submit">Sign Up</button>
-            </div>
-        </form>
-    </div>
-    </div>
-</div>
-`
+// Please help me postformData onto our server
+async function handleSignup(event){
+    event.preventDefault();
+    let form = event.currentTarget.closest("#signupForm");
+
+    let formData = $(form).serializeArray().reduce((acc, x)=> {
+        acc[x.name] = x.value;
+        return acc;
+    }, {});
+    
+    console.log(formData);
+
+    const result = await axios({
+        method: 'post',
+        url: "http://localhost:3000/account/create",
+        body:{
+            "name": "bolinZ",
+            "pass": "123456"  
+        }
+    })
+
+
 
 }
 
@@ -171,6 +205,7 @@ function renderWall() {
 }
 
 async function handleRenderWall(event) {
+    event.preventDefault();
     $('#loginPage').empty();
     $('#wallPage').empty();
     $('#homePage').empty();
@@ -181,4 +216,5 @@ async function handleRenderWall(event) {
     })
     $('#joke').append("Do you know that: " + result.data.value.joke);
 }
+
 
