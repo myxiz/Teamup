@@ -6,7 +6,23 @@ import {parseDelete} from "../middlewares/parse_delete";
 export const router = express.Router();
 export const prefix = '/public';
 
+var id = 0;
+
 const {publicStore} = require('../data/DataStore');
+
+
+
+router.post('/wallposts', async function (req, res) {
+  const body = req.body.body;
+  publicStore.set(`posts.${id}`, {
+    data: { text: body,
+      date: Date.now(),
+       }
+  });
+  res.send({data: publicStore.get(`posts.${id++}`), status: 'Successfully posted'});
+});
+
+
 
 
 router.get('/*', parseGet, function (req, res) {
