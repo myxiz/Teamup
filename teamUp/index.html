@@ -55,11 +55,16 @@
                 <div class="navbar-nav">
                 </div>
             </div>
-
-            <div class="navbar-right">
+            <div class="navbar-left">
                 <button class="navbar-right btn btn-dark btn-lg" id="home">Home</button>
                 <button class="navbar-right btn btn-dark btn-lg" id="wall">Wall</button>
             </div>
+            
+            <div class="navbar-right loggedIn">
+                <span>Welcome, KMP!</span>
+                <button class="navbar-right btn btn-warning btn-xs" onclick="mainApp.logOut()">Log out</button>
+            </div>
+        </div>
         </div>
     </nav>
 
@@ -84,9 +89,12 @@
         </div>
 
         <div id="signUpFormPage">
-        
+
         </div>
 
+        <div id="groupPage">
+
+        </div>
     </div>
 
 
@@ -94,12 +102,12 @@
     </div>
 
 
-    <script>
+    <!--<script>
         document.getElementsByTagName('video')[0].onended = function () {
             this.load();
             this.play();
         };
-    </script>
+    </script>-->
     <script src="node_modules/jQuery/dist/jquery.js"></script>
     <script src="node_modules/axios/dist/axios.js"></script>
     <script src="landing_render.js"></script>
