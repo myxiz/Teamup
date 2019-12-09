@@ -77,10 +77,6 @@
     "bolinz": {
       "passwordHash": "$2b$10$zCEeJGzMYuYufQeof2UcMu1mGfRkcUtoVtXSPNLg8rFq./sFueQYy",
       "data": {}
-    },
-    "test": {
-      "passwordHash": "$2b$10$8V8wCh19scu1kAjm9b5.E..A9timiH3gwHv6vyeI1GLCcgyz.3uM.",
-      "data": {}
     }
   }
 }

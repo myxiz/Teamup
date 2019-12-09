@@ -1,22 +1,2 @@
 {
-  "posts": {
-    "0": {
-      "data": {
-        "text": "test",
-        "date": 1575863000469
-      }
-    },
-    "1": {
-      "data": {
-        "text": "tetsts client 1",
-        "date": 1575863186961
-      }
-    },
-    "2": {
-      "data": {
-        "text": "client2",
-        "date": 1575863211535
-      }
-    }
-  }
 }
