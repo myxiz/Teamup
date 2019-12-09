@@ -77,6 +77,46 @@
     "bolinz": {
       "passwordHash": "$2b$10$zCEeJGzMYuYufQeof2UcMu1mGfRkcUtoVtXSPNLg8rFq./sFueQYy",
       "data": {}
+    },
+    "mengyu_zhong@other": {
+      "passwordHash": "$2b$10$k5u4v.yyK8UEBJaUA.0in.5.zcpiuBygYWgAkdORfBLIyfWSkChGS",
+      "data": {
+        "firstname": "mmm",
+        "lastname": "nnn",
+        "gender": "Female",
+        "year": "Sophomore",
+        "bio": "1234",
+        "major": "1234"
+      }
+    },
+    "mengyu_zhong": {
+      "passwordHash": "$2b$10$SXTj28E7dPfAcuzTRzs6Ve2c.SJOEZ.AhfKCsEMh2hlTTTId1sGua",
+      "data": {
+        "email": "",
+        "year": "Junior",
+        "bio": "",
+        "major": ""
+      }
+    },
+    "test100": {
+      "passwordHash": "$2b$10$FSe5PgXBNOEd6iXzZv71fuNdOY1LdpSTybff7Gqg6SRoXSs3T7Ha6",
+      "data": {
+        "email": "mengyu_zhong@sina.com",
+        "gender": "Female",
+        "year": "Junior",
+        "bio": "1234",
+        "major": "1234"
+      }
+    },
+    "molly": {
+      "passwordHash": "$2b$10$3uIMAQePPf6/KpvJnCeK/uCLuo4nrF.O6ge246gSvKc5FAJvnfCjO",
+      "data": {
+        "email": "mengyu_zhong@sina.com",
+        "gender": "Female",
+        "year": "Junior",
+        "bio": "Final call",
+        "major": "IT&Cognition"
+      }
     }
   }
 }

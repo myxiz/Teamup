@@ -9,6 +9,8 @@ $(document).ready(async () => {
 
 })
 
+
+
 // rendering home page
 function renderHomePage() {
     return `<!-- logo -->
@@ -70,72 +72,74 @@ function handleRenderLogin(event) {
 function renderSignUpPage() {
     return  `
     <br>
-    <form class="form-horizontal" role="form" id="signupForm">
-    <div class="form-row">
-        <div class="col form-group">
-            <label>First name </label>   
-              <input type="text" class="form-control" name="firstName">
-        </div> <!-- form-group end.// -->
-        <div class="col form-group">
-            <label>Last name</label>
-              <input type="text" class="form-control" name="lastName">
-        </div> <!-- form-group end.// -->
-
-        <div class="col form-group">
-                <label>Username</label>
-                <input type="usernmae" class="form-control" name="userName">
+    <form  class="form-horizontal" role="form" id="signupForm" >
+        <div class="form-row">
+            <div class="col form-group">
+                <label>First name </label>   
+                <input type="text" class="form-control" name="firstName">
             </div> <!-- form-group end.// -->
-    </div> <!-- form-row end.// -->
-
-    <div class="form-group">
-            <label>Email address</label>
-            <input type="email" class="form-control" name="email">
-            <small class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <div class="col form-group">
+                <label>Last name</label>
+                    <input type="text" class="form-control" name="lastName">
+            </div> <!-- form-group end.// -->
         </div>
+        <div class="form-row">
+            <div class = "col form-group">
+            
+                <label>Gender</label>
+                <select id="inputState" class="form-control" name="gender">
+                <option> Choose...</option>
+                <option>Female</option>
+                <option>Male</option>
+                </select>
+            </div> <!-- form-group end.// -->
+
+            
+            <div class="col form-group">
+                <label>Username</label>
+                    <input type="text" class="form-control" name="name">
+            </div> <!-- form-group end.// -->
+        </div> <!-- form-row end.// -->
+
+   
         
-    <div class="form-group">
-            <label class="col-sm-3 control-label">
-                <input class="form-control" type="radio" name="gender" value="Male">
-                <span class="form-check-label"> Male </span>
-            </label>
-            <label class="col-sm-3 control-label">
-                <input class="form-control" type="radio" name="gender" value="Female">
-                <span class="form-check-label"> Female</span>
-            </label>
-        </div><!-- form-group end.// -->
-    <div class="form-row">
-        <div class="form-group col-md-6">
-          <label>Major</label>
-          <input type="text" class="form-control" name="major">
-        </div> <!-- form-group end.// -->
-        <div class="form-group col-md-6">
-          <label>Year</label>
-          <select id="inputState" class="form-control" name="year">
-            <option> Choose...</option>
-              <option>Freshman</option>
-              <option>Sophomore</option>
-              <option selected="">Junior</option>
-              <option>Senior</option>
-          </select>
-        </div> <!-- form-group end.// -->
-    </div> <!-- form-row.// -->
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Major</label>
+                <input type="text" class="form-control" name="major">
+            </div> <!-- form-group end.// -->
+            <div class="form-group col-md-6">
+                <label>Year</label>
+                <select id="inputState" class="form-control" name="year">
+                <option> Choose...</option>
+                <option>Freshman</option>
+                <option>Sophomore</option>
+                <option selected="">Junior</option>
+                <option>Senior</option>
+                </select>
+            </div> <!-- form-group end.// -->
+        </div> <!-- form-row.// -->
 
-    <div class="form-group">
-        <label for="bio">Description/Bio</label>
-        <textarea class="form-control" rows="2" id="bio" name="bio"></textarea>
-        <small class="form-text text-muted">Be creative, be yourself ;)</small>
+        <div class="form-group">
+            <label for="bio">Description/Bio</label>
+                <textarea class="form-control" rows="2" id="bio" type= "textarea" name="bio"></textarea>
+            <small class="form-text text-muted">Be creative, be yourself ;)</small>
+        </div>
+        <div class="form-group">
+        <label>Email address</label>
+            <input type="email" class="form-control" name="email">
+        <small class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
 
-      </div>
-
-    <div class="form-group">
-        <label>Create password</label>
-        <input class="form-control" type="password2" name="password">
-    </div> <!-- form-group end.// -->  
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary btn-block" id="signupButton"> Sign up  </button>
-    </div> <!-- form-group// -->      
-    <small class="text-muted">By clicking the 'Sign Up' button, you confirm that you accept our <br> Terms of use and Privacy Policy.</small>                                          
-</form>`
+        <div class="form-group">
+            <label>Create password</label>
+            <input class="form-control" type="password" name="pass">
+        </div> <!-- form-group end.// -->  
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block" id="signupButton"> Sign up  </button>
+        </div> <!-- form-group// -->      
+        <small class="text-muted">By clicking the 'Sign Up' button, you confirm that you accept our <br> Terms of use and Privacy Policy.</small>                                          
+    </form>`
 }
 
 function handleRenderSignUp(event) {
@@ -144,30 +148,37 @@ function handleRenderSignUp(event) {
     $('#wallPage').empty();
     $('#homePage').empty();
     $('#loginPage').append(renderSignUpPage());
+    const $form = $('#signupForm');
+    let $submit = $('#signupButton')
+    // const $message = $('#message');
+
+
 }
 
-// Please help me postformData onto our server
+
 async function handleSignup(event){
     event.preventDefault();
     let form = event.currentTarget.closest("#signupForm");
 
-    let formData = $(form).serializeArray().reduce((acc, x)=> {
+    let data = $(form).serializeArray().reduce((acc, x)=> {
         acc[x.name] = x.value;
         return acc;
     }, {});
     
-    console.log(formData);
-
-    const result = await axios({
-        method: 'post',
-        url: "http://localhost:3000/account/create",
-        body:{
-            "name": "bolinZ",
-            "pass": "123456"  
-        }
-    })
-
-
+    // console.log(formData);
+      
+    $.ajax({
+        url: 'http://localhost:3000/account/create',
+        type: 'POST',
+        data,
+        // xhrFields: {
+        //     withCredentials: true,
+        // },
+      }).then((res) => {
+       alert(res.msg);
+      }).catch((res) => {
+        alert(JSON.stringify(res.status))
+      });
 
 }
 

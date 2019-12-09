@@ -68,7 +68,7 @@ router.post('/login', async function (req, res) {
  */
 router.post('/create', function (req, res) {
   if (!req.body.name || !req.body.pass) {
-    res.status(401).send({msg: 'Expected a payload of name and pass.'});
+    res.status(401).send({msg: `Expected a payload of name and pass. ${JSON.stringify(req.body)}`});
     return;
   }
 
@@ -84,13 +84,7 @@ router.post('/create', function (req, res) {
 
   bcrypt.hash(pass, saltRounds, (err, hash) => {
     accountStore.set(`users.${name}`, {
-      passwordHash: hash,
-      data: { firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        gender:req.body.gender, 
-        year:req.body.year,
-        bio :req.body.bio,
-        major:req.body.major}
+      passwordHash: hash
     });
     res.send({data: userFilter(accountStore.get(`users.${name}`)), status: 'Successfully made account'});
   });
