@@ -117,6 +117,7 @@
         "bio": "Final call",
         "major": "IT&Cognition"
       }
+    },
     "test": {
       "passwordHash": "$2b$10$8V8wCh19scu1kAjm9b5.E..A9timiH3gwHv6vyeI1GLCcgyz.3uM.",
       "data": {}

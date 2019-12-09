@@ -233,6 +233,9 @@ async function handleSignup(event){
       }).catch((res) => {
         alert(JSON.stringify(res.status))
       });
+    }
+
+
 // Please help me postformData onto our server
 async function handleSignup(event) {
     event.preventDefault();
@@ -468,9 +471,6 @@ function renderGroupPage() {
     </div>
     </div>
     `
-
-
-
 }
 
 function handleRenderGroupPage() {
