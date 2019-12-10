@@ -124,7 +124,7 @@ async function logInRequest(data){
 
 // render sign up page
 function renderSignUpPage() {
-    return `
+    return  `
     <br>
     <form  class="form-horizontal" role="form" id="signupForm" >
         <div class="form-row">
@@ -229,32 +229,10 @@ async function handleSignup(event){
         //     withCredentials: true,
         // },
       }).then((res) => {
-       alert(res.msg);
+         handleRenderLogin
       }).catch((res) => {
         alert(JSON.stringify(res.status))
       });
-// Please help me postformData onto our server
-async function handleSignup(event) {
-    event.preventDefault();
-    let form = event.currentTarget.closest("#signupForm");
-
-    let formData = $(form).serializeArray().reduce((acc, x) => {
-        acc[x.name] = x.value;
-        return acc;
-    }, {});
-
-    console.log(formData);
-
-    const result = await axios({
-        method: 'post',
-        url: "http://localhost:3000/account/create",
-        data: {
-            "name": "bolinZ",
-            "pass": "123456"
-        }
-    })
-
-
 
 }
 
@@ -471,8 +449,6 @@ function renderGroupPage() {
 
 
 
-}
-
 function handleRenderGroupPage() {
     $('#loginPage').empty();
     $('#wallPage').empty();
@@ -482,4 +458,3 @@ function handleRenderGroupPage() {
     
     
 }
-
