@@ -197,7 +197,7 @@ function renderSignUpPage() {
 
         <div class="form-group">
             <label>Create password</label>
-            <input class="form-control" type="password" name="pass">
+            <input class="form-control" type="password2" name="pass">
         </div> <!-- form-group end.// -->  
         <div class="form-group">
             <button type="submit" class="btn btn-primary btn-block" id="signupButton"> Sign up  </button>
@@ -400,8 +400,8 @@ async function getWallPosts() {
 // render group page
 function renderGroupPage() {
     $("#groupPage").append(`<div class="background"></div>
-    <div class="container">
-        
+    <div class="container"> 
+        <p class="text">Team up with someone today!</p>
         <!-- create group form -->
         <form  class="form-horizontal" role="form" id="createGroupForm" >    
             <div class="form-row">
@@ -465,7 +465,7 @@ function renderStudentPage() {
         </ul>
 
         <!-- student cards to be inserted dynamically here -->
-        <div id="student"> </div>`)
+        <div id="students"> </div>`)
 
     // async function to get all the students and render student cards individually using renderStudentCard(student)
 
