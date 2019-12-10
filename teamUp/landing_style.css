@@ -406,6 +406,11 @@ body {
     border-radius: 0;
   }
 
+  #createGroupButton{
+    background-color: #13294B;
+    color:white;   
+  }
+
   #deleteToDoButton{
     background-color: #7BAFD4;
   }

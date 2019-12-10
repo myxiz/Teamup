@@ -399,143 +399,33 @@ async function getWallPosts() {
 
 // render group page
 function renderGroupPage() {
-    return `<div class="background"></div>
-    <div class="container">
-        <p class="text">Team up with someone today!</p>
-        <!-- Search form -->
-        <form class="form-inline ">
-          <input class="form-control form-control-sm ml-3 w-50" type="text" placeholder="Search"
-            aria-label="Search">
-          <i class="fas fa-search ml-3" aria-hidden="true"></i>
-        </form>   
-        </p>
-        <div class="row">
-            <div class="col-sm">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Max Barth</h5>
-                        <p class="card-text">I am an easy going exchange student from Germany.</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Gender: <i class="fa fa-mars fa-lg"></i></li>
-                        <li class="list-group-item">Year: Second Year Grad School</li>
-                        <li class="list-group-item">Major: Computer Science</li>
-                        <li class="list-group-item">Relevant Skills: Java, Machine Learning</li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Facebook</a>
-                        <a href="#" class="card-link">Email</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Bolin Zhu</h5>
-                        <p class="card-text">I am interested in utilizing data and analytics to enhance the UNC
-                            experience for students.</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Gender: Male</li>
-                        <li class="list-group-item">Year: Junior</li>
-                        <li class="list-group-item">Major: Business Analytics</li>
-                        <li class="list-group-item">Relevant Skills: Python, HTML, Javascript, CSS</li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Facebook</a>
-                        <a href="#" class="card-link">Email</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Josh Evans</h5>
-                        <p class="card-text">Born and rasied in North Carolina! Finding teammates to solve real problems
-                            for students</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Gender: Male</li>
-                        <li class="list-group-item">Year: Senior</li>
-                        <li class="list-group-item">Major: Economics</li>
-                        <li class="list-group-item">Relevant Skills: Java, Data Structures and Algorithms</li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Facebook</a>
-                        <a href="#" class="card-link">Email</a>
-                    </div>
-                </div>
-            </div>
+    $("#groupPage").append(`
+    <form  class="form-horizontal" role="form" id="createGroupForm" >
+        
+        <div class="form-row">
+            <div class="col form-group">
+                <label>Group Name</label>   
+                <input type="text" class="form-control" name="groupName">
+            </div> <!-- form-group end.// -->
+            
+           <div class = "col form-group">
+                <label>Maximum Capacity</label>
+                <select id="inputGender" class="form-control" name="maxCapacity">
+                <option> Choose...</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                </select>
+            </div> <!-- form-group end.// -->
         </div>
-        <br>
 
-        <div class="row">
-            <div class="col-sm">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Ignacio Piera</h5>
-                        <p class="card-text">I am from Spain! I care a lot about more grades so you can rely on me to
-                            work very hard over the sem!</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Gender: Male</li>
-                        <li class="list-group-item">Year: First Year Grad School</li>
-                        <li class="list-group-item">Major: Applied Mathematics</li>
-                        <li class="list-group-item">Relevant Skills: </li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Facebook</a>
-                        <a href="#" class="card-link">Email</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Alberto Esquivias</h5>
-                        <p class="card-text">I am a fun and lovable person to work with! Let's develop something and
-                            create new memories ;)!</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Gender: Male</li>
-                        <li class="list-group-item">Year: Junior</li>
-                        <li class="list-group-item">Major: Information System</li>
-                        <li class="list-group-item">Relevant Skills: HTML5, CSS, JavaScript</li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Facebook</a>
-                        <a href="#" class="card-link">Email</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Molly Yu</h5>
-                        <p class="card-text">I am from Copenhagen, looking forward to meet and work with cool people.
-                        </p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Gender: Female</li>
-                        <li class="list-group-item">Year: First Year Grad School</li>
-                        <li class="list-group-item">Major: Information System</li>
-                        <li class="list-group-item">Relevant Skills: C++ </li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Facebook</a>
-                        <a href="#" class="card-link">Email</a>
-                    </div>
-                </div>
-            </div>
-            <br>
+        <div class="form-row">
+            <div class="form-group">
+                <button type="button" class="btn btn-primary btn-lg btn-block" id="createGroupButton">Create Group</button>
+            </div> <!-- form-group// -->       
         </div>
-    </div>
-    </div>
-    `
+    </form>`)
+    
 }
 
 // render student page
