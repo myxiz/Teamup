@@ -5,7 +5,9 @@ $(document).ready(async () => {
     $('#navBar').on("click", "#wall", handleRenderWall);
     $('#navBar').on("click", "#home", handleRenderHome);
     $('#navBar').on("click", "#groupsBtn", handleRenderGroupPage);
+    $('#navBar').on("click", "#studentsBtn", handleRenderStudentPage);
     $('#content').on("click", "#noAccount", handleRenderSignUp);
+    $('#content').on("click", "#signup", handleRenderSignUp);
     $('#content').on("click", "#signupButton", handleSignup);
     $('#loggedIn').on("click", "#logout", handleLogout);
 
@@ -42,6 +44,7 @@ function handleRenderHome(event) {
     $('#homePage').empty();
     $("#video").show();
     $('#groupPage').empty();
+    $('#signUpFormPage').empty();
     $('#homePage').append(renderHomePage());
     $('video')[0].onended = function () {
         this.load();
@@ -83,6 +86,7 @@ function handleRenderLogin(event) {
     $('#wallPage').empty();
     $('#homePage').empty();
     $('#groupPage').empty();
+    $('#signUpFormPage').empty();
     $('#loginPage').append(renderLoginPage());
 
     const $form = $('#login-form');
@@ -116,7 +120,7 @@ async function logInRequest(data) {
         // Call the rerenderFunction (to be written) to show GroupPage including a logoff button in navbar
         //rerender();
         /* This is just parked here. To access the stored token use this line 
-        // let jwt = localStorage.getItem('jwt'); 
+        let jwt = localStorage.getItem('jwt'); 
         and put it then into an authorization bearer header*/
 
         // TO DO: put replace/ rerender call here (e.g. wall page with log out user button)
@@ -147,7 +151,7 @@ function renderSignUpPage() {
             <div class = "col form-group">
             
                 <label>Gender</label>
-                <select id="inputState" class="form-control" name="gender">
+                <select id="inputGender" class="form-control" name="gender">
                 <option> Choose...</option>
                 <option>Female</option>
                 <option>Male</option>
@@ -170,7 +174,7 @@ function renderSignUpPage() {
             </div> <!-- form-group end.// -->
             <div class="form-group col-md-6">
                 <label>Year</label>
-                <select id="inputState" class="form-control" name="year">
+                <select id="inputYear" class="form-control" name="year">
                 <option> Choose...</option>
                 <option>Freshman</option>
                 <option>Sophomore</option>
@@ -213,7 +217,7 @@ function handleRenderSignUp(event) {
     $('#wallPage').empty();
     $('#homePage').empty();
     $('#groupPage').empty();
-    $('#loginPage').append(renderSignUpPage());
+    $('#signUpFormPage').append(renderSignUpPage());
 
 }
 
@@ -318,9 +322,11 @@ function renderWallPost(post){
 async function handleRenderWall(event) {
     event.preventDefault();
     $('#loginPage').empty();
+    $('#signUpFormPage').empty();
     $('#wallPage').empty();
     $('#homePage').empty();
     $('#groupPage').empty();
+    $('#studentPage').empty();
     $('#wallPage').append(renderWall());
 
 
@@ -383,6 +389,149 @@ function renderGroupPage() {
     return `<div class="background"></div>
     <div class="container">
         <p class="text">Team up with someone today!</p>
+        <div class="row">
+            <div class="col-sm">
+                <div class="card" style="width: 20rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Max Barth</h5>
+                        <p class="card-text">I am an easy going exchange student from Germany.</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Gender: <i class="fa fa-mars fa-lg"></i></li>
+                        <li class="list-group-item">Year: Second Year Grad School</li>
+                        <li class="list-group-item">Major: Computer Science</li>
+                        <li class="list-group-item">Relevant Skills: Java, Machine Learning</li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="#" class="card-link">Facebook</a>
+                        <a href="#" class="card-link">Email</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm">
+                <div class="card" style="width: 20rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Bolin Zhu</h5>
+                        <p class="card-text">I am interested in utilizing data and analytics to enhance the UNC
+                            experience for students.</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Gender: Male</li>
+                        <li class="list-group-item">Year: Junior</li>
+                        <li class="list-group-item">Major: Business Analytics</li>
+                        <li class="list-group-item">Relevant Skills: Python, HTML, Javascript, CSS</li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="#" class="card-link">Facebook</a>
+                        <a href="#" class="card-link">Email</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm">
+                <div class="card" style="width: 20rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Josh Evans</h5>
+                        <p class="card-text">Born and rasied in North Carolina! Finding teammates to solve real problems
+                            for students</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Gender: Male</li>
+                        <li class="list-group-item">Year: Senior</li>
+                        <li class="list-group-item">Major: Economics</li>
+                        <li class="list-group-item">Relevant Skills: Java, Data Structures and Algorithms</li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="#" class="card-link">Facebook</a>
+                        <a href="#" class="card-link">Email</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col-sm">
+                <div class="card" style="width: 20rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Ignacio Piera</h5>
+                        <p class="card-text">I am from Spain! I care a lot about more grades so you can rely on me to
+                            work very hard over the sem!</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Gender: Male</li>
+                        <li class="list-group-item">Year: First Year Grad School</li>
+                        <li class="list-group-item">Major: Applied Mathematics</li>
+                        <li class="list-group-item">Relevant Skills: </li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="#" class="card-link">Facebook</a>
+                        <a href="#" class="card-link">Email</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm">
+                <div class="card" style="width: 20rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Alberto Esquivias</h5>
+                        <p class="card-text">I am a fun and lovable person to work with! Let's develop something and
+                            create new memories ;)!</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Gender: Male</li>
+                        <li class="list-group-item">Year: Junior</li>
+                        <li class="list-group-item">Major: Information System</li>
+                        <li class="list-group-item">Relevant Skills: HTML5, CSS, JavaScript</li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="#" class="card-link">Facebook</a>
+                        <a href="#" class="card-link">Email</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm">
+                <div class="card" style="width: 20rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Molly Yu</h5>
+                        <p class="card-text">I am from Copenhagen, looking forward to meet and work with cool people.
+                        </p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Gender: Female</li>
+                        <li class="list-group-item">Year: First Year Grad School</li>
+                        <li class="list-group-item">Major: Information System</li>
+                        <li class="list-group-item">Relevant Skills: C++ </li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="#" class="card-link">Facebook</a>
+                        <a href="#" class="card-link">Email</a>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+    </div>
+    `
+}
+
+// render group page
+function renderStudentPage() {
+    return `<div class="background"></div>
+    <div class="container">
+        <p class="text ml-3">Team up with someone today! 
+        
+        <!-- Search form -->
+        <form class="form-inline ">
+          <input class="form-control form-control-sm ml-3 w-50" type="text" placeholder="Search"
+            aria-label="Search">
+          <i class="fas fa-search ml-3" aria-hidden="true"></i>
+        </form>
+        
+        </p>
         <div class="row">
             <div class="col-sm">
                 <div class="card" style="width: 20rem;">
@@ -517,14 +666,29 @@ function handleRenderGroupPage() {
     $('#loginPage').empty();
     $('#wallPage').empty();
     $('#homePage').empty();
+    $('#signUpFormPage').empty();
+    $('#studentPage').empty();
     $('#video').hide();
     $('#homeDiv').hide();
     $('#loggedIn').show();
     $('#groupsDiv').show();
     $('#studentsDiv').show();
     $('#groupPage').append(renderGroupPage());
+}
 
-
+// function that is called once user clicks students in navbar
+function handleRenderStudentPage() {
+    $('#loginPage').empty();
+    $('#wallPage').empty();
+    $('#homePage').empty();
+    $('#signUpFormPage').empty();
+    $('#groupPage').empty();
+    $('#video').hide();
+    $('#homeDiv').hide();
+    $('#loggedIn').show();
+    $('#groupsDiv').show();
+    $('#studentsDiv').show();
+    $('#studentPage').append(renderStudentPage());
 }
 
 // function that is called after click on logout button

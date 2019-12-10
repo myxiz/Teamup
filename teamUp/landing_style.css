@@ -25,6 +25,12 @@ html, body{
 #signupButton{
     background-color: #7BAFD4;
 }
+
+#logout{
+    background-color: #7BAFD4;
+    border-color: #7BAFD4;
+}
+
 .navbar-brand>img{
     max-height: 40px;
     width: auto;
@@ -263,7 +269,7 @@ h1{
 }
 
 body {
-    background: url(icon/student-login-background.jpg) fixed;
+    background: url(icon/student-login-background-bright.jpg) fixed;
    background-size: cover;
 }
 
