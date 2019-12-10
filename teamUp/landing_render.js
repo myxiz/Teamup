@@ -199,6 +199,11 @@ function renderSignUpPage() {
             <button type="submit" class="btn btn-primary btn-block" id="signupButton"> Sign up  </button>
         </div> <!-- form-group// -->      
         <small class="text-muted">By clicking the 'Sign Up' button, you confirm that you accept our <br> Terms of use and Privacy Policy.</small>                                          
+        <div class="field">
+            <div class="control">
+                <p id="message"></p>
+            </div>
+        </div>    
     </form>`
 }
 
@@ -209,10 +214,6 @@ function handleRenderSignUp(event) {
     $('#homePage').empty();
     $('#groupPage').empty();
     $('#loginPage').append(renderSignUpPage());
-    const $form = $('#signupForm');
-    let $submit = $('#signupButton')
-    // const $message = $('#message');
-
 
 }
 
@@ -225,7 +226,7 @@ async function handleSignup(event) {
         acc[x.name] = x.value;
         return acc;
     }, {});
-
+    let $message = $('#message');
     // console.log(formData);
 
     $.ajax({
@@ -236,11 +237,32 @@ async function handleSignup(event) {
         //     withCredentials: true,
         // },
       }).then((res) => {
-         handleRenderLogin
+        logInRequest(data);
+        accountDataCreate(data);
       }).catch((res) => {
-        alert(JSON.stringify(res.status))
-      });
+        $message.html('<span class="has-text-danger">Something went wrong and you were not signed up.</span>');
+      }).then();
 
+}
+
+async function accountDataCreate(data){
+    let $message = $('#message');
+    axios
+    .post(`http://localhost:3000/private/users/${data.name}`, {data: {
+        'firstname': data.firstname,
+         'lastname': data.lastname,
+         'email':data.email,
+         'gender':data.gender, 
+         'year':data.year,
+         'bio' :data.bio,
+         'major':data.major} },
+         {headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` }},
+    )
+    .then(res => console.log(res))
+    .catch(err =>{ console.log(err) ;
+        $message.html('<span class="has-text-danger">Something went wrong when store the info.</span>');}
+    );
+ 
 }
 
 // render wall of comments
