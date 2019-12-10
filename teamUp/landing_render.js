@@ -399,32 +399,38 @@ async function getWallPosts() {
 
 // render group page
 function renderGroupPage() {
-    $("#groupPage").append(`
-    <form  class="form-horizontal" role="form" id="createGroupForm" >
+    $("#groupPage").append(`<div class="background"></div>
+    <div class="container">
         
-        <div class="form-row">
-            <div class="col form-group">
-                <label>Group Name</label>   
-                <input type="text" class="form-control" name="groupName">
-            </div> <!-- form-group end.// -->
+        <!-- create group form -->
+        <form  class="form-horizontal" role="form" id="createGroupForm" >    
+            <div class="form-row">
+                <div class="col form-group">
+                    <label>Group Name</label>   
+                    <input type="text" class="form-control" name="groupName">
+                </div> <!-- form-group end.// -->
             
-           <div class = "col form-group">
-                <label>Maximum Capacity</label>
-                <select id="inputGender" class="form-control" name="maxCapacity">
-                <option> Choose...</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                </select>
-            </div> <!-- form-group end.// -->
-        </div>
+            <div class = "col form-group">
+                    <label>Maximum Capacity</label>
+                    <select id="inputGender" class="form-control" name="maxCapacity">
+                    <option> Choose...</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    </select>
+                </div> <!-- form-group end.// -->
+            </div>
 
-        <div class="form-row">
-            <div class="form-group">
-                <button type="button" class="btn btn-primary btn-lg btn-block" id="createGroupButton">Create Group</button>
-            </div> <!-- form-group// -->       
-        </div>
-    </form>`)
+            <div class="form-row">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" id="createGroupButton">Create Group</button>
+                </div> <!-- form-group// -->       
+            </div>
+        </form>
+
+        <!-- group cards to be inserted dynamically -->
+        <div id="groups"> </div>
+    </div>`)
     
 }
 
@@ -456,7 +462,10 @@ function renderStudentPage() {
 
             <li class="list-group-item">15% Presentation/Expo due December 12th<button type="button" class="btn btn-primary btn-lg pull-right" id="deleteToDoButton">Delete</li>
 
-        </ul>`)
+        </ul>
+
+        <!-- student cards to be inserted dynamically here -->
+        <div id="student"> </div>`)
 
     // async function to get all the students and render student cards individually using renderStudentCard(student)
 
