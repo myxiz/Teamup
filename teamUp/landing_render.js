@@ -1,11 +1,13 @@
 $(document).ready(async () => {
     $('#homePage').append(renderHomePage());
     $('#content').on("click", "#login", handleRenderLogin);
-    $("#signup").on("click", handleRenderSignUp);
+    $('#signup').on("click", handleRenderSignUp);
     $('#navBar').on("click", "#wall", handleRenderWall);
     $('#navBar').on("click", "#home", handleRenderHome);
+    $('#navBar').on("click", "#groupsBtn", handleRenderGroupPage);
     $('#content').on("click", "#noAccount", handleRenderSignUp);
     $('#content').on("click", "#signupButton", handleSignup);
+    $('#loggedIn').on("click", "#logout", handleLogout);
 
 })
 
@@ -32,11 +34,14 @@ function renderHomePage() {
 }
 
 function handleRenderHome(event) {
-    event.preventDefault();
+    if (event) {
+        event.preventDefault();
+    }
     $('#loginPage').empty();
     $('#wallPage').empty();
     $('#homePage').empty();
     $("#video").show();
+    $('#groupPage').empty();
     $('#homePage').append(renderHomePage());
     $('video')[0].onended = function () {
         this.load();
@@ -77,6 +82,7 @@ function handleRenderLogin(event) {
     $('#loginPage').empty();
     $('#wallPage').empty();
     $('#homePage').empty();
+    $('#groupPage').empty();
     $('#loginPage').append(renderLoginPage());
 
     const $form = $('#login-form');
@@ -95,29 +101,29 @@ function handleRenderLogin(event) {
 }
 
 
-async function logInRequest(data){
-        const $message = $('#message');
-        $message.html('');
-        $.ajax({
-            url: 'http://localhost:3000/account/login',
-            type: 'POST',
-            data,
-        }).then((res) => {
-            $message.html(`<span class="has-text-success">Success! You are now logged in.</span>`);
-            // Store the jwt token from the response to use it later on for authorization 
-            localStorage.setItem('jwt', res.jwt);
-            handleRenderGroupPage();
-            // Call the rerenderFunction (to be written) to show GroupPage including a logoff button in navbar
-            //rerender();
-            /* This is just parked here. To access the stored token use this line 
-            // let jwt = localStorage.getItem('jwt'); 
-            and put it then into an authorization bearer header*/ 
+async function logInRequest(data) {
+    const $message = $('#message');
+    $message.html('');
+    $.ajax({
+        url: 'http://localhost:3000/account/login',
+        type: 'POST',
+        data,
+    }).then((res) => {
+        $message.html(`<span class="has-text-success">Success! You are now logged in.</span>`);
+        // Store the jwt token from the response to use it later on for authorization 
+        localStorage.setItem('jwt', res.jwt);
+        handleRenderGroupPage();
+        // Call the rerenderFunction (to be written) to show GroupPage including a logoff button in navbar
+        //rerender();
+        /* This is just parked here. To access the stored token use this line 
+        // let jwt = localStorage.getItem('jwt'); 
+        and put it then into an authorization bearer header*/
 
-            // TO DO: put replace/ rerender call here (e.g. wall page with log out user button)
-            // window.location.replace("http://localhost:3000/index.html")
-        }).catch(() => {
-            $message.html('<span class="has-text-danger">Something went wrong and you were not logged in. Check your email and password and your internet connection.</span>');
-        });
+        // TO DO: put replace/ rerender call here (e.g. wall page with log out user button)
+        // window.location.replace("http://localhost:3000/index.html")
+    }).catch(() => {
+        $message.html('<span class="has-text-danger">Something went wrong and you were not logged in. Check your email and password and your internet connection.</span>');
+    });
 }
 
 
@@ -201,6 +207,7 @@ function handleRenderSignUp(event) {
     $('#loginPage').empty();
     $('#wallPage').empty();
     $('#homePage').empty();
+    $('#groupPage').empty();
     $('#loginPage').append(renderSignUpPage());
     const $form = $('#signupForm');
     let $submit = $('#signupButton')
@@ -210,17 +217,17 @@ function handleRenderSignUp(event) {
 }
 
 
-async function handleSignup(event){
+async function handleSignup(event) {
     event.preventDefault();
     let form = event.currentTarget.closest("#signupForm");
 
-    let data = $(form).serializeArray().reduce((acc, x)=> {
+    let data = $(form).serializeArray().reduce((acc, x) => {
         acc[x.name] = x.value;
         return acc;
     }, {});
-    
+
     // console.log(formData);
-      
+
     $.ajax({
         url: 'http://localhost:3000/account/create',
         type: 'POST',
@@ -254,7 +261,7 @@ function renderWall() {
             </div>
             <div class="field">
                 <div class="control">
-                <button class="btn-dark btn-xs" type="submit">Post</button>
+                <button class="btn-dark btn" type="submit">Post</button>
                 </div>
             </div>
         </form>
@@ -262,34 +269,58 @@ function renderWall() {
         <div class="clearfix"></div>
         <hr class="margin-bottom-10">
 
-        <ul class="list-group list-group-dividered list-group-full" id="tweetStream">
-
+        <br>
+        <ul class="list-unstyled" id="tweetStream">
+            <!-- tweets will be rendered here dynamically, see handleRenderWall -->
         </ul>
         <span class="text-info">COMP426 Exclusive</span>
     </div>
 </div>`
 }
 
+function renderWallPost(post){
+    let timeDiff = diff_minutes(Date.now(), new Date(post.data.date));
+    return `
+    <li class="media">
+        <img class="mr-3 rounded resizeImg" src="/icon/avatar.png" alt="Avatar">
+        <div class="media-body">
+            <h5 class="mt-0 mb-1">Anonymous <small>${timeDiff}m</small></h5>
+            ${post.data.text}
+        </div>
+    </li><br>`
+}
+
+
+
+// callback function to render Wall
 async function handleRenderWall(event) {
     event.preventDefault();
     $('#loginPage').empty();
     $('#wallPage').empty();
     $('#homePage').empty();
+    $('#groupPage').empty();
     $('#wallPage').append(renderWall());
 
-    // 3rd party integration - fetch joke from API
+
+    // integration to fetch joke from 3rd party API
     const result = await axios({
         method: 'get',
         url: "http://api.icndb.com/jokes/random?limitTo=[nerdy]"
     })
-    $('#joke').append("Do you know that: " + result.data.value.joke);
+    $('#joke').append("Just for the giggles: " + result.data.value.joke);
 
 
-    // TO DO: read tweets to render them on the wall
+    // call getWallPosts function and forward result to renderPost function
+    const posts = await getWallPosts();
+    console.log(posts);
+    for(let i = 0; i < Object.keys(posts).length; i++){ 
+        console.log(posts[i]);
+        $('#tweetStream').prepend(renderWallPost(posts[i]));
+    }
 
-    // Public post to wall
+
+    // Public: conduct post to wall
     const $form = $('#tweetForm');
-
     $form.submit(function (e) {
         e.preventDefault();
 
@@ -303,7 +334,11 @@ async function handleRenderWall(event) {
             type: 'POST',
             data,
         }).then((res) => {
-            // TO DO: put replace/ rerender call here (e.g. wall page with log out user button)
+            console.log(res.post);
+            $('#tweetStream').prepend(renderWallPost(res.post));
+            $('#postBox').replaceWith(`<textarea class="form-control" placeholder="Share with us what's on your mind right now?" rows="2"
+            name="body" id="postBox"></textarea>`);
+            // TO DO: put replace/ rerender call here (e.g. wall page with updated post
             // window.location.replace("http://localhost:3000/index.html")
         }).catch(() => {
         });
@@ -311,7 +346,14 @@ async function handleRenderWall(event) {
 }
 
 
-
+// call to get wallposts
+async function getWallPosts() {
+    const result = await axios({
+        method: 'get',
+        url: 'http://localhost:3000/public/wallposts',
+    });
+    return result.data.posts;
+};
 
 
 // render group page
@@ -446,15 +488,37 @@ function renderGroupPage() {
     </div>
     </div>
     `
+}
 
-
-
+// function that is called once user is logged on to render new group page
 function handleRenderGroupPage() {
     $('#loginPage').empty();
     $('#wallPage').empty();
     $('#homePage').empty();
-    $("#video").hide();
+    $('#video').hide();
+    $('#homeDiv').hide();
+    $('#loggedIn').show();
+    $('#groupsDiv').show();
+    $('#studentsDiv').show();
     $('#groupPage').append(renderGroupPage());
-    
-    
+
+
+}
+
+// function that is called after click on logout button
+function handleLogout() {
+    localStorage.removeItem('jwt');
+    $('#loggedIn').hide();
+    $('#groupsDiv').hide();
+    $('#studentsDiv').hide();
+    $('#homeDiv').show();
+    handleRenderHome();
+}
+
+
+// helper function to calc the time difference
+function diff_minutes(datenow, tweetTS) {
+    let diff = (datenow - tweetTS) / 1000;
+    diff /= 60;
+    return Math.abs(Math.round(diff));
 }

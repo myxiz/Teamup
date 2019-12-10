@@ -11,7 +11,7 @@ var id = 0;
 const {publicStore} = require('../data/DataStore');
 
 
-
+// post sth to the wall
 router.post('/wallposts', async function (req, res) {
   const body = req.body.body;
   publicStore.set(`posts.${id}`, {
@@ -19,9 +19,13 @@ router.post('/wallposts', async function (req, res) {
       date: Date.now(),
        }
   });
-  res.send({data: publicStore.get(`posts.${id++}`), status: 'Successfully posted'});
+  res.send({post: publicStore.get(`posts.${id++}`), status: 'Successfully posted'});
 });
 
+// get posts for rendering the wall - currently all of them, might limit/ filter to 50
+router.get('/wallposts', async function (req, res) {
+  res.send({posts: publicStore.get(`posts`)});
+});
 
 
 

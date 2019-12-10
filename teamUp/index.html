@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
     <!-- bulma css -->
+    <!--<link rel="stylesheet" href="node_modules/bulma/css/bulma.css" />-->
+    <!--<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>-->
     <!-- <link rel="stylesheet" href="node_modules/bulma/css/bulma.css"> -->
 
     <!-- Own CSS -->
@@ -53,17 +55,30 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
+                        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                                <div class="btn-group mr-2" role="group" aria-label="First group" id="homeDiv">
+                                    <button class="btn btn-dark btn-lg" id="home">Home</button>
+                                </div>
+                                <div class="btn-group mr-2" role="group" aria-label="Second group" style="display:none" id="groupsDiv">
+                                        <button class="btn btn-dark btn-lg" id="groupsBtn">Groups</button>
+                                </div>
+                                <div class="btn-group mr-2" role="group" aria-label="Second group" style="display:none" id="studentsDiv">
+                                        <button class="btn btn-dark btn-lg" id="studentsBtn">Students</button>
+                                </div>
+                                <div class="btn-group mr-2" role="group" aria-label="Second group">
+                                    <button class="btn btn-dark btn-lg" id="wall">Wall</button>
+                                </div>
+                        </div>
+                        
                 </div>
             </div>
-            <div class="navbar-left">
-                <button class="navbar-right btn btn-dark btn-lg" id="home">Home</button>
-                <button class="navbar-right btn btn-dark btn-lg" id="wall">Wall</button>
+            <div class="navbar-right" id="loggedIn" style="display:none">
+                <!-- change this to dynamically retrieving the name once user is logged in! -->
+                    <span>Welcome, KMP!</span>
+                    <button class="navbar-right btn btn-warning btn-xs" id="logout">Log out</button>
             </div>
             
-            <div class="navbar-right loggedIn">
-                <span>Welcome, KMP!</span>
-                <button class="navbar-right btn btn-warning btn-xs" onclick="mainApp.logOut()">Log out</button>
-            </div>
+            
         </div>
         </div>
     </nav>
