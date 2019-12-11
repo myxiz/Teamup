@@ -119,6 +119,7 @@ async function logInRequest(data) {
         $message.html(`<span class="has-text-success">Success! You are now logged in.</span>`);
         // Store the jwt token from the response to use it later on for authorization 
         localStorage.setItem('jwt', res.jwt);
+        localStorage.setItem('name',res.name);
         handleRenderGroupPage();
         // Call the rerenderFunction (to be written) to show GroupPage including a logoff button in navbar
         //rerender();
@@ -249,7 +250,7 @@ async function handleSignup(event) {
         accountDataCreate(data);
     }).catch((res) => {
         $message.html('<span class="has-text-danger">Something went wrong and you were not signed up.</span>');
-    }).then();
+    });
 
 }
 
@@ -403,6 +404,7 @@ async function getWallPosts() {
 
 // render group page
 function renderGroupPage() {
+    $("#welcome").html(`Welcome,<a onclick="handleRenderUserPage()">${localStorage.getItem('name')}</a>!`);
     $("#groupPage").append(`<div class="background"></div>
     <div class="container"> 
         <p class="text">Team up with someone today!</p>
@@ -461,42 +463,54 @@ function renderGroupCard(group) {
 }
 
 // render student page
-function renderStudentPage() {
+function renderUserPage() {
     $("#studentPage").append(`<div class="background"></div>
     <div class="container">
-        <p class="text">Team up with someone today!</p>
-        
-        <div id="myDIV" class="header">
-        <h2>My To Do List</h2>
-        <br>
-        <form id="toDo-form">
-        <input type="text" name="toDo" id="myInput" placeholder="To do...">
-        <button type="button" id="addToDoButton">Add</button>
-        </form>
-        </div>
+    <p class="text">Team up with someone today!</p>
+        <div class="row" id="userPage">
+               
+            <div class= "col" >
+                <div class = "card"  style="width: 40rem; margin-top:1rem">
+                    
+                        <div id="myDIV" class="header">
+                            <h2>My To Do List</h2>
+                            <br>
+                            <form id="toDo-form">
+                            <input type="text" name="toDo" id="myInput" placeholder="To do...">
+                            <button type="button" id="addToDoButton">Add</button>
+                            </form>
+                        
+                </div>
 
-        <ul class="list-group list-group-flush" id="toDoList">
+                <ul class="list-group list-group-flush" id="toDoList">
+                    
+                <!-- to be inserted dynamically -->
+                <!-- maybe a functino called renderToDoList()-->
+
+                    <li class="list-group-item">Proposal due October 12th <button type="button" class="btn btn-primary btn-lg pull-right" id="deleteToDoButton">Delete</button></li>
+                    
+                    <li class="list-group-item">Mockup due October 31st <button type="button" class="btn btn-primary btn-lg pull-right" id="deleteToDoButton">Delete</li>
+
+                    <li class="list-group-item">15% Video due December 10th <button type="button" class="btn btn-primary btn-lg pull-right" id="deleteToDoButton">Delete</li>
+
+                    <li class="list-group-item">15% Presentation/Expo due December 12th<button type="button" class="btn btn-primary btn-lg pull-right" id="deleteToDoButton">Delete</li>
+
+                </ul>
+
+                <!-- student cards to be inserted dynamically here -->
+            </div>
+            </div>
             
-        <!-- to be inserted dynamically -->
-        <!-- maybe a functino called renderToDoList()-->
+       </div> 
+    </div>`)
 
-            <li class="list-group-item">Proposal due October 12th <button type="button" class="btn btn-primary btn-lg pull-right" id="deleteToDoButton">Delete</button></li>
-            
-            <li class="list-group-item">Mockup due October 31st <button type="button" class="btn btn-primary btn-lg pull-right" id="deleteToDoButton">Delete</li>
-
-            <li class="list-group-item">15% Video due December 10th <button type="button" class="btn btn-primary btn-lg pull-right" id="deleteToDoButton">Delete</li>
-
-            <li class="list-group-item">15% Presentation/Expo due December 12th<button type="button" class="btn btn-primary btn-lg pull-right" id="deleteToDoButton">Delete</li>
-
-        </ul>
-
-        <!-- student cards to be inserted dynamically here -->
-        <div id="students"> 
-        
-        </div>`)
-
+<<<<<<< HEAD
     $("#students").append(renderOwnStudentCard());
     //$("#students").append(renderOwnEditStudentCard());
+=======
+        $("#userPage").prepend(renderOwnStudentCard());
+        //$("#students").append(renderOwnEditStudentCard());
+>>>>>>> 862d89d040f89de0b6a944c996001d87093533db
 
     // async function to get all the students and render student cards individually using renderStudentCard(student)
 
@@ -510,8 +524,8 @@ function renderStudentPage() {
 }
 
 function renderOwnStudentCard(student) {
-    return `<div class="col-sm" id="ownCard">
-    <div class="card" style="width: 20rem;">
+    return `<div class="col" id="ownCard">
+    <div class="card" style="width: 20rem; margin-top:1rem">
         <div class="card-body">
         <h5 class="card-title lead"> <img class="mr-3 rounded resizeImg" src="icon/avatar.png" alt="Avatar"> My Profile </h5>
         <p class="card-text">I am an easy going exchange student from Germany.</p>
@@ -532,12 +546,12 @@ function renderOwnStudentCard(student) {
 
 function handleEditOwnCard(event) {
     $("#ownCard").remove();
-    $('#students').prepend(renderOwnEditStudentCard());
+    $('#userPage').prepend(renderOwnEditStudentCard());
 }
 
 function handleCancelEditOwnCard(event) {
     $("#ownCard").remove();
-    $('#students').prepend(renderOwnStudentCard());
+    $('#userPage').prepend(renderOwnStudentCard());
 }
 
 function renderOwnEditStudentCard(student) {
@@ -616,7 +630,7 @@ function renderStudentCard(student) {
 }
 
 // function that is called once user is logged on to render new group page
-function handleRenderGroupPage() {
+function handleRenderGroupPage(res) {
     $('#loginPage').empty();
     $('#wallPage').empty();
     $('#homePage').empty();
@@ -627,7 +641,11 @@ function handleRenderGroupPage() {
     $('#loggedIn').show();
     $('#groupsDiv').show();
     $('#studentsDiv').show();
-    $('#groupPage').append(renderGroupPage());
+    $('#studentsDiv').show();
+    $('#groupPage').empty();
+    $('#groupPage').append(renderGroupPage(res));
+
+
 }
 
 // function that is called once user clicks students in navbar
@@ -642,7 +660,23 @@ function handleRenderStudentPage() {
     $('#loggedIn').show();
     $('#groupsDiv').show();
     $('#studentsDiv').show();
+    $('#studentPage').empty();
     $('#studentPage').append(renderStudentPage());
+}
+
+function handleRenderUserPage() {
+    $('#loginPage').empty();
+    $('#wallPage').empty();
+    $('#homePage').empty();
+    $('#signUpFormPage').empty();
+    $('#groupPage').empty();
+    $('#video').hide();
+    $('#homeDiv').hide();
+    $('#loggedIn').show();
+    $('#groupsDiv').show();
+    $('#studentsDiv').show();
+    $('#studentPage').empty();
+    $('#studentPage').append(renderUserPage());
 }
 
 // function that is called after click on logout button
@@ -661,4 +695,29 @@ function diff_minutes(datenow, tweetTS) {
     let diff = (datenow - tweetTS) / 1000;
     diff /= 60;
     return Math.abs(Math.round(diff));
+}
+
+
+async function getStatus() {
+    try {
+        const result = await axios({
+            method: 'get',
+            headers: { Authorization: `Bearer ${getToken()}` },
+            url: 'http://localhost:3000/account/status',
+        });
+        return result.data;
+    } catch (error) {
+        return false;
+    }
+};
+
+
+const getToken = () => {
+    let token = localStorage.getItem('jwt');
+    return token;
+}
+
+const setToken = (jwtToken) => {
+    token = jwtToken;
+    localStorage.setItem('jwt', token);
 }

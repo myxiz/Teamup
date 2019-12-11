@@ -121,6 +121,18 @@
     "test": {
       "passwordHash": "$2b$10$8V8wCh19scu1kAjm9b5.E..A9timiH3gwHv6vyeI1GLCcgyz.3uM.",
       "data": {}
+    },
+    "ma": {
+      "passwordHash": "$2b$10$PE1SIgaf5ZOEx9HUcPrIhuqK5MHf5mhE/zYnYnaWsS8pyr6lr/mXC"
+    },
+    "maba": {
+      "passwordHash": "$2b$10$TDt.GwnEFaXtMHbAEpvjDu1hA5z8L3FHTnAu6pev46BnwTnxxhBee"
+    },
+    "mad": {
+      "passwordHash": "$2b$10$ysmiz1jVU0EFk22YkgN8w.j9NTnfjCvSLEy3ojjaufeecbZmD/trK"
+    },
+    "rrer": {
+      "passwordHash": "$2b$10$x/VKpfo2pWa06JoKW.urLed1nsxDLtcqkqr/tb9cv269D.DnsGduG"
     }
   }
 }

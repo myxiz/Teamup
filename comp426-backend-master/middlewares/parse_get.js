@@ -1,5 +1,6 @@
 import {parsePath} from "./parse_utils";
 
+// access our datastore
 export function parseGet(req, res, next) {
     let {path, isIndexRequest, isBaseRequest, userName, isUserRequest} = parsePath(req);
 
@@ -20,6 +21,7 @@ export function parseGet(req, res, next) {
 
     req.handleGet = (store) => {
         try {
+            // store.getpath, replaces / with . ...
             const result = store.get(path);
             if (typeof result === 'undefined') {
                 res.status(404).send({err: `Resource ${isIndexRequest ? 'index ' : ''}does not exist`, path});

@@ -9,6 +9,7 @@ export const prefix = '/private';
 
 const {privateStore} = require('../data/DataStore');
 
+var id = 0;
 /**
  * Every request to this route needs
  * to be made from an authenticated user.
@@ -22,12 +23,14 @@ router.get('/*', parseGet, function (req, res) {
   }
 });
 
+
 router.post('/*', parsePost, function (req, res) {
   const result = req.handlePost(privateStore);
   if (typeof result !== 'undefined') {
     res.send({result})
   }
 });
+
 
 router.delete('/*', parseDelete, function (req, res) {
   const result = req.handleDelete(privateStore);

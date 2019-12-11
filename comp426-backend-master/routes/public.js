@@ -6,11 +6,9 @@ import {parseDelete} from "../middlewares/parse_delete";
 export const router = express.Router();
 export const prefix = '/public';
 
-var id = 0;
-
 const {publicStore} = require('../data/DataStore');
 
-
+/*
 // post sth to the wall
 router.post('/wallposts', async function (req, res) {
   const body = req.body.body;
@@ -27,7 +25,7 @@ router.get('/wallposts', async function (req, res) {
   res.send({posts: publicStore.get(`posts`)});
 });
 
-
+*/
 
 router.get('/*', parseGet, function (req, res) {
   const result = req.handleGet(publicStore);
