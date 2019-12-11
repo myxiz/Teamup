@@ -432,10 +432,32 @@ function renderGroupPage() {
             </div>
         </form>
 
-        <!-- group cards to be inserted dynamically -->
-        <div id="groups"> </div>
-    </div>`)
 
+
+        <!-- group cards to be inserted dynamically -->
+        <div id="groups"> </div>`)
+
+        $("#groups").append(renderGroupCard());
+
+}
+
+// group card
+function renderGroupCard(group) {
+    return `<div class="card" style="width: 18rem;">
+<div class="card-body">
+  <h1 class="card-title bold">Hello World</h1>
+  <p class="card-text" style="text-align:center;">Max Capacity 3</p>
+</div>
+<ul class="list-group list-group-flush">
+  <li class="list-group-item">Bolin Zhu</li>
+  <li class="list-group-item">Molly Zhong</li>
+  <li class="list-group-item">Max Barth</li>
+</ul>
+<div class="card-body">
+  <button href="#" class="btn btn-primary btn-lg btn-block" id="joinGroupButton">Join</button>
+</div>
+</div>
+      </div>`
 }
 
 // render student page
@@ -473,8 +495,8 @@ function renderStudentPage() {
         
         </div>`)
 
-        $("#students").append(renderOwnStudentCard());
-        //$("#students").append(renderOwnEditStudentCard());
+    $("#students").append(renderOwnStudentCard());
+    //$("#students").append(renderOwnEditStudentCard());
 
     // async function to get all the students and render student cards individually using renderStudentCard(student)
 
@@ -508,17 +530,17 @@ function renderOwnStudentCard(student) {
 }
 
 
-function handleEditOwnCard(event){
+function handleEditOwnCard(event) {
     $("#ownCard").remove();
     $('#students').prepend(renderOwnEditStudentCard());
 }
 
-function handleCancelEditOwnCard(event){
+function handleCancelEditOwnCard(event) {
     $("#ownCard").remove();
     $('#students').prepend(renderOwnStudentCard());
 }
 
-function renderOwnEditStudentCard(student){
+function renderOwnEditStudentCard(student) {
     // need logged in user information to pre fill all the values
     // eg. <input class="input" type="text" value="${hero.firstSeen}" name="firstSeen">
 
