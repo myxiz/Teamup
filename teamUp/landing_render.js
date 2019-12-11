@@ -515,21 +515,24 @@ function renderGroupCard(group) {
 }
 
 // render student page
-async function getUserData(name) {
-    $.ajax({
+async function getUserData(name){
+    try {
+    const res = await $.ajax({
         url: `http://localhost:3000/private/users/${name}`,
         type: 'GET',
-        headers: { Authorization: `Bearer ${getToken()}` },
-    }).then((res) => {
-        alert(res.result)
-    }
+        headers:{ Authorization: `Bearer ${getToken()}` }
+    })
+        return res.result;
 
-    )
+    } catch(error){
+        let result = 'code has-error';
+        return result;
+    }    
 }
 
 
 async function renderUserPage() {
-    let uesrData = await getUserData(localStorage.getItem("name"));
+    
     $("#userPage").append(`<div class="background"></div>
     <div class="container">
     <p class="text">Team up with someone today!</p>
@@ -568,10 +571,21 @@ async function renderUserPage() {
             </div>
             
        </div> 
-    </div>`)
+    </div>`);
+   
+    try {
+       const result = await getUserData(localStorage.getItem("name"))
+       $("#userPageBody").prepend(renderOwnStudentCard(result));
+    } catch (error) {
+        console.log(error);
+        result = error;
+    }  
+    
 
-    $("#userPageBody").prepend(renderOwnStudentCard(uesrData));
-    //$("#students").append(renderOwnEditStudentCard());
+    
+    
+   
+        //$("#students").append(renderOwnEditStudentCard());
 
     // async function to get all the students and render student cards individually using renderStudentCard(student)
 
@@ -585,17 +599,19 @@ async function renderUserPage() {
 }
 
 function renderOwnStudentCard(student) {
+    console.log(student);
+    console.log(student.bio);
     return `<div class="col" id="ownCard">
     <div class="card" style="width: 20rem; margin-top:1rem">
         <div class="card-body">
         <h5 class="card-title lead"> <img class="mr-3 rounded resizeImg" src="icon/avatar.png" alt="Avatar"> My Profile </h5>
-        <p class="card-text">I am an easy going exchange student from Germany.</p>
+        <p class="card-text" id = "ownBio">${student.bio}</p>
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Gender: <i class="fa fa-mars fa-lg"></i></li>
-            <li class="list-group-item">Year: Second Year Grad School</li>
-            <li class="list-group-item">Major: Computer Science</li>
-            <li class="list-group-item">Relevant Skills: Java, Machine Learning</li>
+            <li class="list-group-item">Year: ${student.year}</li>
+            <li class="list-group-item">Major:${student.major}</li>
+            <li class="list-group-item">Relevant Skills: ${student.skills}</li>
         </ul>
         <div class="card-body">
             <button type="button" class="btn btn-primary btn-lg btn-block" id="editOwnCard">Edit</button>
