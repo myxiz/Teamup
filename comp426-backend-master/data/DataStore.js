@@ -23,5 +23,4 @@ files.forEach(file => {
   }
 });
 
-
 module.exports = dataStores;

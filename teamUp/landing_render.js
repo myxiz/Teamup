@@ -243,35 +243,20 @@ async function handleSignup(event) {
     }, {});
     let $message = $('#message');
     // console.log(formData);
-    // $.ajax({
-    //     url: 'http://localhost:3000/account/create',
-    //     type: 'POST',
-    //     data,
-    //     // xhrFields: {
-    //     //     withCredentials: true,
-    //     // },
-    // }).then((res) => {
-    //     logInRequest(data);
-    //     accountDataCreate(data);
-    // }).catch((res) => {
-    //     $message.html('<span class="has-text-danger">Something went wrong and you were not signed up.</span>');
-    // });
 
-    try {
-         await $.ajax({
+    $.ajax({
         url: 'http://localhost:3000/account/create',
         type: 'POST',
         data,
         // xhrFields: {
         //     withCredentials: true,
         // },
-    }) ;
+    }).then((res) => {
         logInRequest(data);
         accountDataCreate(data);
-    } catch (error) {
-        console.log(error)
+    }).catch((res) => {
         $message.html('<span class="has-text-danger">Something went wrong and you were not signed up.</span>');
-    } 
+    });
 
 }
 
@@ -280,8 +265,8 @@ async function accountDataCreate(data) {
     axios
         .post(`http://localhost:3000/private/users/${data.name.toLowerCase().split('.')}`, {
             data: {
-                'firstname': data.firstName,
-                'lastname': data.lastName,
+                'firstname': data.firstname,
+                'lastname': data.lastname,
                 'email': data.email,
                 'gender': data.gender,
                 'year': data.year,
@@ -516,23 +501,20 @@ function renderGroupCard(group) {
 
 // render student page
 async function getUserData(name){
-    try {
-    const res = await $.ajax({
+    $.ajax({
         url: `http://localhost:3000/private/users/${name}`,
         type: 'GET',
-        headers:{ Authorization: `Bearer ${getToken()}` }
-    })
-        return res.result;
-
-    } catch(error){
-        let result = 'code has-error';
-        return result;
-    }    
+        headers:{ Authorization: `Bearer ${getToken()}` },
+    }).then((res)=>{
+        alert(res.result)
+    }
+        
+    )
 }
 
 
 async function renderUserPage() {
-    
+    let uesrData = await getUserData(localStorage.getItem("name"));
     $("#userPage").append(`<div class="background"></div>
     <div class="container">
     <p class="text">Team up with someone today!</p>
@@ -571,20 +553,9 @@ async function renderUserPage() {
             </div>
             
        </div> 
-    </div>`);
-   
-    try {
-       const result = await getUserData(localStorage.getItem("name"))
-       $("#userPageBody").prepend(renderOwnStudentCard(result));
-    } catch (error) {
-        console.log(error);
-        result = error;
-    }  
-    
+    </div>`)
 
-    
-    
-   
+        $("#userPageBody").prepend(renderOwnStudentCard(uesrData));
         //$("#students").append(renderOwnEditStudentCard());
 
     // async function to get all the students and render student cards individually using renderStudentCard(student)
@@ -599,19 +570,17 @@ async function renderUserPage() {
 }
 
 function renderOwnStudentCard(student) {
-    //console.log(student);
-    //console.log(student.bio);
     return `<div class="col" id="ownCard">
     <div class="card" style="width: 20rem; margin-top:1rem">
         <div class="card-body">
         <h5 class="card-title lead"> <img class="mr-3 rounded resizeImg" src="icon/avatar.png" alt="Avatar"> My Profile </h5>
-        <p class="card-text" id = "ownBio">${student.bio}</p>
+        <p class="card-text">I am an easy going exchange student from Germany.</p>
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Gender: <i class="fa fa-mars fa-lg"></i></li>
-            <li class="list-group-item">Year: ${student.year}</li>
-            <li class="list-group-item">Major:${student.major}</li>
-            <li class="list-group-item">Relevant Skills: ${student.skills}</li>
+            <li class="list-group-item">Year: Second Year Grad School</li>
+            <li class="list-group-item">Major: Computer Science</li>
+            <li class="list-group-item">Relevant Skills: Java, Machine Learning</li>
         </ul>
         <div class="card-body">
             <button type="button" class="btn btn-primary btn-lg btn-block" id="editOwnCard">Edit</button>
@@ -621,8 +590,7 @@ function renderOwnStudentCard(student) {
 }
 
 
-async function handleEditOwnCard(event) {
-    
+function handleEditOwnCard(event) {
     $("#ownCard").remove();
     try {
         const result = await getUserData(localStorage.getItem("name"));
@@ -635,49 +603,49 @@ async function handleEditOwnCard(event) {
     
 }
 
-async function handleCancelEditOwnCard(event) {
+function handleCancelEditOwnCard(event) {
     $("#ownCard").remove();
-    handleRenderUserPage(event);
+    $('#userPage').prepend(renderOwnStudentCard());
 }
 
 function renderOwnEditStudentCard(student) {
     // need logged in user information to pre fill all the values
     // eg. <input class="input" type="text" value="${hero.firstSeen}" name="firstSeen">
-    console.log(student);
+
     return `<form class="col-sm" id="ownCard">
     <div class="card" style="width: 20rem;">
         <div class="card-body">
         <h5 class="card-title lead"><img class="mr-3 rounded resizeImg" src="icon/avatar.png" alt="Avatar"> My Profile </h5>
         </div>
         <ul class="list-group list-group-flush">        
-            <li class="list-group-item">Gender: ${student.gender}</li>
+            <li class="list-group-item">Gender: <i class="fa fa-mars fa-lg"></i></li>
             <br>
 
             <div class="control">
                 <div class="col form-group">
                 <label>Bio</label>
-            <textarea class="form-control" rows="2" name="bio">${student.bio}</textarea>
+            <textarea class="form-control" rows="2" name="bio">I am an easy going exchange student from Germany.</textarea>
             </div>
             </div>
 
         <div class="control">
             <div class="col form-group">
             <label>Year</label>   
-            <input type="text" class="form-control" name="year" value="${student.year}">
+            <input type="text" class="form-control" name="Year" value="Second Year Grad School">
         </div> 
         </div<<!-- form-group end.// -->
             
         <div class="control">
         <div class="col form-group">
         <label>Major</label>   
-        <input type="text" class="form-control" name="major" value="${student.major}">
+        <input type="text" class="form-control" name="major" value="Computer Science">
     </div> 
     </div><!-- form-group end.// -->
     
     <div class="control">
         <div class="col form-group">
         <label>Relevant skills</label>   
-        <input type="text" class="form-control" name="skills" value="${student.skills}">
+        <input type="text" class="form-control" name="skills" value="Java, Machine Learning">
     </div> 
     </div><!-- form-group end.// -->
         </ul>
@@ -703,21 +671,20 @@ async function renderStudentPage(students) {
     </div>`)
     let counter = 0;
     for (var student in students) {
-        //console.log("student in loop");
-        //console.log(student);
+        console.log(counter);
         if (counter === 0) {
-            $("#students").append(`<div class="row">${renderStudentCard(students[student])}</div>`);
+            $("#students").append(`<div class="row">${renderStudentCard(student)}</div>`);
             counter = counter + 1;
             //console.log(0);
         }
         else {
             if (counter === 1) {
-                $(".row").append(renderStudentCard(students[student]));
+                $(".row").append(renderStudentCard(student));
                 counter = counter + 1;
                 //console.log(1);
             } else {
                 if (counter === 2) {
-                    $(".row").append(renderStudentCard(students[student]));
+                    $(".row").append(renderStudentCard(student));
                     counter = 0;
                     //console.log(2);
                 }
@@ -744,45 +711,25 @@ async function renderStudentPage(students) {
 }
 
 function renderStudentCard(student) {
-    console.log(student);
-    if (student.gender === 'Male') {
-        return `<div class="col-sm">
-        <div class="card" style="width: 20rem;">
-            <div class="card-body">
-            <h5 class="card-title lead"> <img class="mr-3 rounded resizeImg" src="icon/avatar-m.png" alt="Avatar"> ${student.firstname} ${student.lastname}</h5>
-            <p class="card-text">${student.bio}</p>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">Gender: ${student.gender}</li>
-                <li class="list-group-item">Year: ${student.year}</li>
-                <li class="list-group-item">Major: ${student.major}</li>
-                <li class="list-group-item">Relevant Skills: ${student.skills}</li>
-            </ul>
-            <div class="card-body">
-                <a href="#" class="card-link">Email</a>
-            </div>
+    // check gender of students, use different avatar icon for male and female students
+    return `<div class="col-sm">
+    <div class="card" style="width: 20rem;">
+        <div class="card-body">
+        <h5 class="card-title lead"> <img class="mr-3 rounded resizeImg" src="icon/avatar-m.png" alt="Avatar"> Alberto Esquivias</h5>
+        <p class="card-text">I am a fun and lovable person to work with! Let's develop something and
+                create new memories ;)!</p>
         </div>
-    </div>`
-    }
-    else {
-        return `<div class="col-sm">
-        <div class="card" style="width: 20rem;">
-            <div class="card-body">
-            <h5 class="card-title lead"> <img class="mr-3 rounded resizeImg" src="icon/avatar-f.png" alt="Avatar"> ${student.firstname} ${student.lastname}</h5>
-            <p class="card-text">${student.bio}</p>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">Gender: ${student.gender}</li>
-                <li class="list-group-item">Year: ${student.year}</li>
-                <li class="list-group-item">Major: ${student.major}</li>
-                <li class="list-group-item">Relevant Skills: ${student.skills}</li>
-            </ul>
-            <div class="card-body">
-                <a href="mailto:${student.email}" class="card-link">Email</a>
-            </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Gender: Male</li>
+            <li class="list-group-item">Year: Junior</li>
+            <li class="list-group-item">Major: Information System</li>
+            <li class="list-group-item">Relevant Skills: HTML5, CSS, JavaScript</li>
+        </ul>
+        <div class="card-body">
+            <a href="#" class="card-link">Email</a>
         </div>
-    </div>`
-    }
+    </div>
+</div>`
 }
 
 // function that is called once user is logged on to render new group page
@@ -799,7 +746,6 @@ function handleRenderGroupPage(res) {
     $('#studentsDiv').show();
     $('#studentsDiv').show();
     $('#groupPage').empty();
-    $("#userPage").empty();
     $('#groupPage').append(renderGroupPage(res));
 
 
@@ -818,13 +764,11 @@ async function handleRenderStudentPage() {
     $('#groupsDiv').show();
     $('#studentsDiv').show();
     $('#studentPage').empty();
-    $('#userPage').empty();
-
     //$('#studentPage').append(renderStudentPage());
     const students = await getStudents();
     // call getWallPosts function and forward result to renderPost function
     renderStudentPage(students);
-    //console.log(students);
+    console.log(students);
     /*for (var i in posts) {
         $('#tweetStream').prepend(renderWallPost(posts[i], i));
     }*/
@@ -838,8 +782,8 @@ async function getStudents() {
         headers: { Authorization: `Bearer ${getToken()}` },
         url: 'http://localhost:3000/private/users',
     });
-    //console.log(result);
-    //console.log(result.data.result);
+    console.log(result);
+    console.log(result.data.result);
     return result.data.result;
 };
 
@@ -855,7 +799,6 @@ function handleRenderUserPage() {
     $('#groupsDiv').show();
     $('#studentsDiv').show();
     $('#userPage').empty();
-    $('#studentPage').empty();
     $('#userPage').append(renderUserPage());
 }
 
@@ -866,8 +809,7 @@ function handleLogout() {
     $('#loggedIn').hide();
     $('#groupsDiv').hide();
     $('#studentsDiv').hide();
-    $('#studentPage').empty();
-    $('#userPage').empty();
+    
     $('#homeDiv').show();
     handleRenderHome();
 }
@@ -893,6 +835,7 @@ async function getStatus() {
         return false;
     }
 };
+
 
 const getToken = () => {
     let token = localStorage.getItem('jwt');
