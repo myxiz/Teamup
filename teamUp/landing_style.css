@@ -428,3 +428,7 @@ body {
     background-color: #000;
     color: white;
   }
+
+  #doneEditingOwnCard{
+    background-color: #7BAFD4;
+  }
