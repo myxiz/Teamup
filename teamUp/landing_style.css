@@ -182,7 +182,7 @@ h1{
     margin: 0;
     padding: 0 0 20px;
     text-align: center;
-    font-size: 22px;
+    font-size: 30px;
 }
 
 .loginbox p{
@@ -430,5 +430,10 @@ body {
   }
 
   #doneEditingOwnCard{
+    background-color: #7BAFD4;
+  }
+  
+
+  #joinGroupButton{
     background-color: #7BAFD4;
   }
