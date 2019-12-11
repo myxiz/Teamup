@@ -545,21 +545,17 @@ async function dynmicallyRenderGroups(groups) {
 
 
     // render student page
-    async function getUserData(name){
-        try {
-        const res = await $.ajax({
+    async function getUserData(name) {
+        $.ajax({
             url: `http://localhost:3000/private/users/${name}`,
             type: 'GET',
-            headers:{ Authorization: `Bearer ${getToken()}` }
-        })
-            return res.result;
-    
-        } catch(error){
-            let result = 'code has-error';
-            return result;
-        }    
+            headers: { Authorization: `Bearer ${getToken()}` },
+        }).then((res) => {
+            alert(res.result)
+        }
+
+        )
     }
-    
 
 
 
