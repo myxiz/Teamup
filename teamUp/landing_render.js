@@ -10,6 +10,9 @@ $(document).ready(async () => {
     $('#content').on("click", "#signup", handleRenderSignUp);
     $('#content').on("click", "#signupButton", handleSignup);
     $('#loggedIn').on("click", "#logout", handleLogout);
+    $('#content').on("click", "#editOwnCard", handleEditOwnCard);
+    $('#content').on("click", "#canelEditingOwnCard", handleCancelEditOwnCard);
+
 
 })
 
@@ -180,6 +183,7 @@ function renderSignUpPage() {
                 <option>Sophomore</option>
                 <option selected="">Junior</option>
                 <option>Senior</option>
+                <option>Grad School</option>
                 </select>
             </div> <!-- form-group end.// -->
         </div> <!-- form-row.// -->
@@ -197,7 +201,7 @@ function renderSignUpPage() {
 
         <div class="form-group">
             <label>Create password</label>
-            <input class="form-control" type="password" name="pass">
+            <input class="form-control" type="password2" name="pass">
         </div> <!-- form-group end.// -->  
         <div class="form-group">
             <button type="submit" class="btn btn-primary btn-block" id="signupButton"> Sign up  </button>
@@ -237,6 +241,9 @@ async function handleSignup(event) {
         url: 'http://localhost:3000/account/create',
         type: 'POST',
         data,
+        // xhrFields: {
+        //     withCredentials: true,
+        // },
     }).then((res) => {
         logInRequest(data);
         accountDataCreate(data);
@@ -306,11 +313,11 @@ function renderWall() {
 </div>`
 }
 
-function renderWallPost(post) {
+function renderWallPost(post, i) {
     let timeDiff = diff_minutes(Date.now(), new Date(post.data.date));
     return `
-    <li class="media">
-        <img class="mr-3 rounded resizeImg" src="/icon/avatar.png" alt="Avatar">
+    <li class="media" id="${i}">
+        <img class="mr-3 rounded resizeImg" src="icon/avatar.png" alt="Avatar">
         <div class="media-body">
             <h5 class="mt-0 mb-1">Anonymous <small>${timeDiff}m</small></h5>
             ${post.data.text}
@@ -318,6 +325,14 @@ function renderWallPost(post) {
     </li><br>`
 }
 
+// delete the post from backend
+async function handleDeleteWallPost(event) {
+    const result = await axios({
+        method: 'delete',
+        url: 'http://localhost:3000/public/delete/i',
+    });
+    return result;
+}
 
 
 // callback function to render Wall
@@ -344,8 +359,8 @@ async function handleRenderWall(event) {
     const posts = await getWallPosts();
     console.log(posts);
     for (let i = 0; i < Object.keys(posts).length; i++) {
-        console.log(posts[i]);
-        $('#tweetStream').prepend(renderWallPost(posts[i]));
+        //console.log(posts[i]);
+        $('#tweetStream').prepend(renderWallPost(posts[i], i));
     }
 
 
@@ -388,279 +403,194 @@ async function getWallPosts() {
 
 // render group page
 function renderGroupPage() {
-    return `<div class="background"></div>
-    <div class="container">
+    $("#groupPage").append(`<div class="background"></div>
+    <div class="container"> 
         <p class="text">Team up with someone today!</p>
-        <div class="row">
-            <div class="col-sm">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Max Barth</h5>
-                        <p class="card-text">I am an easy going exchange student from Germany.</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Gender: <i class="fa fa-mars fa-lg"></i></li>
-                        <li class="list-group-item">Year: Second Year Grad School</li>
-                        <li class="list-group-item">Major: Computer Science</li>
-                        <li class="list-group-item">Relevant Skills: Java, Machine Learning</li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Facebook</a>
-                        <a href="#" class="card-link">Email</a>
-                    </div>
-                </div>
+        <!-- create group form -->
+        <form  class="form-horizontal" role="form" id="createGroupForm" >    
+            <div class="form-row">
+                <div class="col form-group">
+                    <label>Group Name</label>   
+                    <input type="text" class="form-control" name="groupName">
+                </div> <!-- form-group end.// -->
+            
+            <div class = "col form-group">
+                    <label>Maximum Capacity</label>
+                    <select id="inputGender" class="form-control" name="maxCapacity">
+                    <option> Choose...</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    </select>
+                </div> <!-- form-group end.// -->
             </div>
 
-            <div class="col-sm">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Bolin Zhu</h5>
-                        <p class="card-text">I am interested in utilizing data and analytics to enhance the UNC
-                            experience for students.</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Gender: Male</li>
-                        <li class="list-group-item">Year: Junior</li>
-                        <li class="list-group-item">Major: Business Analytics</li>
-                        <li class="list-group-item">Relevant Skills: Python, HTML, Javascript, CSS</li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Facebook</a>
-                        <a href="#" class="card-link">Email</a>
-                    </div>
-                </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" id="createGroupButton">Create Group</button>
+                </div> <!-- form-group// -->       
             </div>
+        </form>
 
-            <div class="col-sm">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Josh Evans</h5>
-                        <p class="card-text">Born and rasied in North Carolina! Finding teammates to solve real problems
-                            for students</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Gender: Male</li>
-                        <li class="list-group-item">Year: Senior</li>
-                        <li class="list-group-item">Major: Economics</li>
-                        <li class="list-group-item">Relevant Skills: Java, Data Structures and Algorithms</li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Facebook</a>
-                        <a href="#" class="card-link">Email</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br>
+        <!-- group cards to be inserted dynamically -->
+        <div id="groups"> </div>
+    </div>`)
 
-        <div class="row">
-            <div class="col-sm">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Ignacio Piera</h5>
-                        <p class="card-text">I am from Spain! I care a lot about more grades so you can rely on me to
-                            work very hard over the sem!</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Gender: Male</li>
-                        <li class="list-group-item">Year: First Year Grad School</li>
-                        <li class="list-group-item">Major: Applied Mathematics</li>
-                        <li class="list-group-item">Relevant Skills: </li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Facebook</a>
-                        <a href="#" class="card-link">Email</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Alberto Esquivias</h5>
-                        <p class="card-text">I am a fun and lovable person to work with! Let's develop something and
-                            create new memories ;)!</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Gender: Male</li>
-                        <li class="list-group-item">Year: Junior</li>
-                        <li class="list-group-item">Major: Information System</li>
-                        <li class="list-group-item">Relevant Skills: HTML5, CSS, JavaScript</li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Facebook</a>
-                        <a href="#" class="card-link">Email</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Molly Yu</h5>
-                        <p class="card-text">I am from Copenhagen, looking forward to meet and work with cool people.
-                        </p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Gender: Female</li>
-                        <li class="list-group-item">Year: First Year Grad School</li>
-                        <li class="list-group-item">Major: Information System</li>
-                        <li class="list-group-item">Relevant Skills: C++ </li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Facebook</a>
-                        <a href="#" class="card-link">Email</a>
-                    </div>
-                </div>
-            </div>
-            <br>
-        </div>
-    </div>
-    </div>
-    `
 }
 
-// render group page
+// render student page
 function renderStudentPage() {
-    return `<div class="background"></div>
+    $("#studentPage").append(`<div class="background"></div>
     <div class="container">
-        <p class="text ml-3">Team up with someone today! 
+        <p class="text">Team up with someone today!</p>
         
-        <!-- Search form -->
-        <form class="form-inline ">
-          <input class="form-control form-control-sm ml-3 w-50" type="text" placeholder="Search"
-            aria-label="Search">
-          <i class="fas fa-search ml-3" aria-hidden="true"></i>
-        </form>
-        
-        </p>
-        <div class="row">
-            <div class="col-sm">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Max Barth</h5>
-                        <p class="card-text">I am an easy going exchange student from Germany.</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Gender: Male</li>
-                        <li class="list-group-item">Year: Second Year Grad School</li>
-                        <li class="list-group-item">Major: Computer Science</li>
-                        <li class="list-group-item">Relevant Skills: Java, Machine Learning</li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Facebook</a>
-                        <a href="#" class="card-link">Email</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Bolin Zhu</h5>
-                        <p class="card-text">I am interested in utilizing data and analytics to enhance the UNC
-                            experience for students.</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Gender: Male</li>
-                        <li class="list-group-item">Year: Junior</li>
-                        <li class="list-group-item">Major: Business Analytics</li>
-                        <li class="list-group-item">Relevant Skills: Python, HTML, Javascript, CSS</li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Facebook</a>
-                        <a href="#" class="card-link">Email</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Josh Evans</h5>
-                        <p class="card-text">Born and rasied in North Carolina! Finding teammates to solve real problems
-                            for students</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Gender: Male</li>
-                        <li class="list-group-item">Year: Senior</li>
-                        <li class="list-group-item">Major: Economics</li>
-                        <li class="list-group-item">Relevant Skills: Java, Data Structures and Algorithms</li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Facebook</a>
-                        <a href="#" class="card-link">Email</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id="myDIV" class="header">
+        <h2>My To Do List</h2>
         <br>
+        <form id="toDo-form">
+        <input type="text" name="toDo" id="myInput" placeholder="To do...">
+        <button type="button" id="addToDoButton">Add</button>
+        </form>
+        </div>
 
-        <div class="row">
-            <div class="col-sm">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Ignacio Piera</h5>
-                        <p class="card-text">I am from Spain! I care a lot about more grades so you can rely on me to
-                            work very hard over the sem!</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Gender: Male</li>
-                        <li class="list-group-item">Year: First Year Grad School</li>
-                        <li class="list-group-item">Major: Applied Mathematics</li>
-                        <li class="list-group-item">Relevant Skills: </li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Facebook</a>
-                        <a href="#" class="card-link">Email</a>
-                    </div>
-                </div>
-            </div>
+        <ul class="list-group list-group-flush" id="toDoList">
+            
+        <!-- to be inserted dynamically -->
+        <!-- maybe a functino called renderToDoList()-->
 
-            <div class="col-sm">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Alberto Esquivias</h5>
-                        <p class="card-text">I am a fun and lovable person to work with! Let's develop something and
-                            create new memories ;)!</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Gender: Male</li>
-                        <li class="list-group-item">Year: Junior</li>
-                        <li class="list-group-item">Major: Information System</li>
-                        <li class="list-group-item">Relevant Skills: HTML5, CSS, JavaScript</li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Facebook</a>
-                        <a href="#" class="card-link">Email</a>
-                    </div>
-                </div>
-            </div>
+            <li class="list-group-item">Proposal due October 12th <button type="button" class="btn btn-primary btn-lg pull-right" id="deleteToDoButton">Delete</button></li>
+            
+            <li class="list-group-item">Mockup due October 31st <button type="button" class="btn btn-primary btn-lg pull-right" id="deleteToDoButton">Delete</li>
 
-            <div class="col-sm">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Molly Yu</h5>
-                        <p class="card-text">I am from Copenhagen, looking forward to meet and work with cool people.
-                        </p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Gender: Female</li>
-                        <li class="list-group-item">Year: First Year Grad School</li>
-                        <li class="list-group-item">Major: Information System</li>
-                        <li class="list-group-item">Relevant Skills: C++ </li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Facebook</a>
-                        <a href="#" class="card-link">Email</a>
-                    </div>
-                </div>
-            </div>
-            <br>
+            <li class="list-group-item">15% Video due December 10th <button type="button" class="btn btn-primary btn-lg pull-right" id="deleteToDoButton">Delete</li>
+
+            <li class="list-group-item">15% Presentation/Expo due December 12th<button type="button" class="btn btn-primary btn-lg pull-right" id="deleteToDoButton">Delete</li>
+
+        </ul>
+
+        <!-- student cards to be inserted dynamically here -->
+        <div id="students"> 
+        
+        </div>`)
+
+        $("#students").append(renderOwnStudentCard());
+        //$("#students").append(renderOwnEditStudentCard());
+
+    // async function to get all the students and render student cards individually using renderStudentCard(student)
+
+    // getName() should return name of the logged in user
+    //let ownName = getName();
+
+    // Using ownName, locate informmation for the logged in user
+
+    //reach row puts three students
+    // insert 3 into each time `<div class="row"></div>`
+}
+
+function renderOwnStudentCard(student) {
+    return `<div class="col-sm" id="ownCard">
+    <div class="card" style="width: 20rem;">
+        <div class="card-body">
+        <h5 class="card-title lead"> <img class="mr-3 rounded resizeImg" src="icon/avatar.png" alt="Avatar"> My Profile </h5>
+        <p class="card-text">I am an easy going exchange student from Germany.</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Gender: <i class="fa fa-mars fa-lg"></i></li>
+            <li class="list-group-item">Year: Second Year Grad School</li>
+            <li class="list-group-item">Major: Computer Science</li>
+            <li class="list-group-item">Relevant Skills: Java, Machine Learning</li>
+        </ul>
+        <div class="card-body">
+            <button type="button" class="btn btn-primary btn-lg btn-block" id="editOwnCard">Edit</button>
         </div>
     </div>
+</div>`
+}
+
+
+function handleEditOwnCard(event){
+    $("#ownCard").remove();
+    $('#students').prepend(renderOwnEditStudentCard());
+}
+
+function handleCancelEditOwnCard(event){
+    $("#ownCard").remove();
+    $('#students').prepend(renderOwnStudentCard());
+}
+
+function renderOwnEditStudentCard(student){
+    // need logged in user information to pre fill all the values
+    // eg. <input class="input" type="text" value="${hero.firstSeen}" name="firstSeen">
+
+    return `<form class="col-sm" id="ownCard">
+    <div class="card" style="width: 20rem;">
+        <div class="card-body">
+        <h5 class="card-title lead"><img class="mr-3 rounded resizeImg" src="icon/avatar.png" alt="Avatar"> My Profile </h5>
+        </div>
+        <ul class="list-group list-group-flush">        
+            <li class="list-group-item">Gender: <i class="fa fa-mars fa-lg"></i></li>
+            <br>
+
+            <div class="control">
+                <div class="col form-group">
+                <label>Bio</label>
+            <textarea class="form-control" rows="2" name="bio">I am an easy going exchange student from Germany.</textarea>
+            </div>
+            </div>
+
+        <div class="control">
+            <div class="col form-group">
+            <label>Year</label>   
+            <input type="text" class="form-control" name="Year" value="Second Year Grad School">
+        </div> 
+        </div<<!-- form-group end.// -->
+            
+        <div class="control">
+        <div class="col form-group">
+        <label>Major</label>   
+        <input type="text" class="form-control" name="major" value="Computer Science">
+    </div> 
+    </div><!-- form-group end.// -->
+    
+    <div class="control">
+        <div class="col form-group">
+        <label>Relevant skills</label>   
+        <input type="text" class="form-control" name="skills" value="Java, Machine Learning">
+    </div> 
+    </div><!-- form-group end.// -->
+        </ul>
+        <div class="card-body">
+            <div class="btn-group float-right" role="group" id="buttonGroup">
+                <button type="button" class="btn btn-primary mr-2" id="doneEditingOwnCard">Done</button>
+                <button type="button" class="btn btn-danger mr-2" id="canelEditingOwnCard">Cancel</button>
+            </div>
+        </div>
     </div>
-    `
+</form>`
+}
+
+
+
+function renderStudentCard(student) {
+    // check gender of students, use different avatar icon for male and female students
+    return `<div class="col-sm">
+    <div class="card" style="width: 20rem;">
+        <div class="card-body">
+        <h5 class="card-title lead"> <img class="mr-3 rounded resizeImg" src="icon/avatar-m.png" alt="Avatar"> Alberto Esquivias</h5>
+        <p class="card-text">I am a fun and lovable person to work with! Let's develop something and
+                create new memories ;)!</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Gender: Male</li>
+            <li class="list-group-item">Year: Junior</li>
+            <li class="list-group-item">Major: Information System</li>
+            <li class="list-group-item">Relevant Skills: HTML5, CSS, JavaScript</li>
+        </ul>
+        <div class="card-body">
+            <a href="#" class="card-link">Email</a>
+        </div>
+    </div>
+</div>`
 }
 
 // function that is called once user is logged on to render new group page
