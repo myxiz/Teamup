@@ -1,70 +1,7 @@
 {
-  "posts": {
-    "0": {
-      "data": {
-        "text": "dead",
-        "date": 1576027704987
-      }
-    },
-    "1": {
-      "data": {
-        "text": "asd",
-        "date": 1576036187961
-      }
-    },
-    "2": {
-      "data": {
-        "text": "yo",
-        "date": 1576036191110
-      }
-    },
-    "3": {
-      "data": {
-        "text": "yo",
-        "date": 1576036191112
-      }
-    },
-    "4": {
-      "data": {
-        "text": "ihihi",
-        "date": 1576036346106
-      }
-    },
-    "5": {
-      "data": {
-        "text": "ihhiuh",
-        "date": 1576036348566
-      }
-    },
-    "6": {
-      "data": {
-        "text": "ihhiuh",
-        "date": 1576036348571
-      }
-    },
-    "7": {
-      "data": {
-        "text": "ds",
-        "date": 1575928653534
-      }
-    },
-    "8": {
-      "data": {
-        "text": "hello alberto",
-        "date": 1575928664210
-      }
-    },
-    "9": {
-      "data": {
-        "text": "whats up berto",
-        "date": 1575928671234
-      }
-    },
-    "10": {
-      "data": {
-        "text": "hej bolin",
-        "date": 1575929147943
-      }
+  "wallposts": {
+    "1576031197616": {
+      "text": "Hello there, anyone here?"
     }
   }
 }
