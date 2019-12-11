@@ -499,6 +499,7 @@ function renderGroupCard(group) {
       </div>`
 }
 
+<<<<<<< HEAD
 // render student page
 async function getUserData(name){
     $.ajax({
@@ -511,6 +512,51 @@ async function getUserData(name){
         
     )
 }
+=======
+
+async function dynmicallyRenderGroups(groups) {
+    let counter = 0;
+    for (var group in groups) {
+        console.log(counter);
+        if (counter === 0) {
+            $("#groups").append(`<div class="row">${renderGroupCard(groups[group])}</div>`);
+            counter++;
+            //console.log(0);
+        }
+        else {
+            if (counter === 1) {
+                $(".row").append(renderGroupCard(groups[group]));
+                counter++;
+                //console.log(1);
+            } else {
+                if (counter === 2) {
+                    $(".row").append(renderGroupCard(groups[group]));
+                    counter = 0;
+                    //console.log(2);
+                }
+            }
+
+        }
+
+
+    }
+
+
+    // render student page
+    async function getUserData(name) {
+        $.ajax({
+            url: `http://localhost:3000/private/users/${name}`,
+            type: 'GET',
+            headers: { Authorization: `Bearer ${getToken()}` },
+        }).then((res) => {
+            alert(res.result)
+        }
+
+        )
+    }
+
+
+>>>>>>> parent of bfc4402... Update landing_render.js
 
 
 async function renderUserPage() {
