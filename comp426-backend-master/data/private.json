@@ -1,3 +1,12 @@
 {
-  
+  "users": {
+    "joshe": {
+      "email": "joshevans@gmail.com",
+      "gender": "Male",
+      "year": "Senior",
+      "bio": "Born and raised in North Carolina! Looking solve some real world problems.",
+      "major": "Economics",
+      "skills": "Java, Data Structure and Algorithms."
+    }
+  }
 }

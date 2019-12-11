@@ -271,7 +271,8 @@ async function accountDataCreate(data) {
                 'gender': data.gender,
                 'year': data.year,
                 'bio': data.bio,
-                'major': data.major
+                'major': data.major,
+                'skills': data.skills,
             }
         },
             { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } },
