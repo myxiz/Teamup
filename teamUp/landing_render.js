@@ -590,7 +590,7 @@ function renderOwnStudentCard(student) {
 }
 
 
-function handleEditOwnCard(event) {
+async function handleEditOwnCard(event) {
     $("#ownCard").remove();
     try {
         const result = await getUserData(localStorage.getItem("name"));
