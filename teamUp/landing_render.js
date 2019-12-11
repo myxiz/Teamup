@@ -257,7 +257,7 @@ async function handleSignup(event) {
 async function accountDataCreate(data) {
     let $message = $('#message');
     axios
-        .post(`http://localhost:3000/private/users/${data.name}`, {
+        .post(`http://localhost:3000/private/users/${data.name.toLowerCase().split('.')}`, {
             data: {
                 'firstname': data.firstname,
                 'lastname': data.lastname,
@@ -275,8 +275,7 @@ async function accountDataCreate(data) {
             console.log(err);
             $message.html('<span class="has-text-danger">Something went wrong when store the info.</span>');
         }
-        );
-
+        ).then();
 }
 
 // render wall of comments
@@ -441,7 +440,21 @@ function renderGroupPage() {
 }
 
 // render student page
-function renderUserPage() {
+async function getUserData(name){
+    $.ajax({
+        url: `http://localhost:3000/private/users/${name}`,
+        type: 'GET',
+        headers:{ Authorization: `Bearer ${getToken()}` },
+    }).then((res)=>{
+        alert(res.data)
+    }
+        
+    )
+}
+
+
+async function renderUserPage() {
+    let uesrData = await getUserData(localStorage.getItem("name"));
     $("#studentPage").append(`<div class="background"></div>
     <div class="container">
     <p class="text">Team up with someone today!</p>
