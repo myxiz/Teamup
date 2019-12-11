@@ -506,7 +506,7 @@ async function getUserData(name){
         type: 'GET',
         headers:{ Authorization: `Bearer ${getToken()}` },
     }).then((res)=>{
-        alert(res.data)
+        alert(res.result)
     }
         
     )
@@ -515,10 +515,10 @@ async function getUserData(name){
 
 async function renderUserPage() {
     let uesrData = await getUserData(localStorage.getItem("name"));
-    $("#studentPage").append(`<div class="background"></div>
+    $("#userPage").append(`<div class="background"></div>
     <div class="container">
     <p class="text">Team up with someone today!</p>
-        <div class="row" id="userPage">
+        <div class="row" id="userPageBody">
                
             <div class= "col" >
                 <div class = "card"  style="width: 40rem; margin-top:1rem">
@@ -555,7 +555,7 @@ async function renderUserPage() {
        </div> 
     </div>`)
 
-        $("#userPage").prepend(renderOwnStudentCard());
+        $("#userPageBody").prepend(renderOwnStudentCard(uesrData));
         //$("#students").append(renderOwnEditStudentCard());
 
     // async function to get all the students and render student cards individually using renderStudentCard(student)
@@ -721,8 +721,8 @@ function handleRenderUserPage() {
     $('#loggedIn').show();
     $('#groupsDiv').show();
     $('#studentsDiv').show();
-    $('#studentPage').empty();
-    $('#studentPage').append(renderUserPage());
+    $('#userPage').empty();
+    $('#userPage').append(renderUserPage());
 }
 
 // function that is called after click on logout button
@@ -732,6 +732,7 @@ function handleLogout() {
     $('#loggedIn').hide();
     $('#groupsDiv').hide();
     $('#studentsDiv').hide();
+    
     $('#homeDiv').show();
     handleRenderHome();
 }
