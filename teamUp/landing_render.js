@@ -193,6 +193,13 @@ function renderSignUpPage() {
                 <textarea class="form-control" rows="2" id="bio" type= "textarea" name="bio"></textarea>
             <small class="form-text text-muted">Be creative, be yourself ;)</small>
         </div>
+
+        <div class="form-group">
+        <label for="bio">Relevant skills</label>
+            <textarea class="form-control" rows="2" id="skills" type= "textarea" name="skills"></textarea>
+        <small class="form-text text-muted">Don't be shy to showcase yourself.</small>
+        </div>
+
         <div class="form-group">
         <label>Email address</label>
             <input type="email" class="form-control" name="email">
@@ -201,10 +208,10 @@ function renderSignUpPage() {
 
         <div class="form-group">
             <label>Create password</label>
-            <input class="form-control" type="password2" name="pass">
+            <input class="form-control" type="password" name="pass">
         </div> <!-- form-group end.// -->  
         <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block" id="signupButton"> Sign up  </button>
+            <button type="submit" class="btn btn-primary btn-block" id="signupButton">Sign up</button>
         </div> <!-- form-group// -->      
         <small class="text-muted">By clicking the 'Sign Up' button, you confirm that you accept our <br> Terms of use and Privacy Policy.</small>                                          
         <div class="field">
@@ -264,7 +271,8 @@ async function accountDataCreate(data) {
                 'gender': data.gender,
                 'year': data.year,
                 'bio': data.bio,
-                'major': data.major
+                'major': data.major,
+                'skills': data.skills,
             }
         },
             { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } },

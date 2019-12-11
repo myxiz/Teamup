@@ -1,3 +1,7 @@
 {
-  
+  "users": {
+    "joshe": {
+      "passwordHash": "$2b$10$dLI0.opWHOfDmaXVp09S1.ZM8gp9NgTcujCqQHwybrnKZv84rL3De"
+    }
+  }
 }
