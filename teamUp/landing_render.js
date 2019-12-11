@@ -243,20 +243,35 @@ async function handleSignup(event) {
     }, {});
     let $message = $('#message');
     // console.log(formData);
+    // $.ajax({
+    //     url: 'http://localhost:3000/account/create',
+    //     type: 'POST',
+    //     data,
+    //     // xhrFields: {
+    //     //     withCredentials: true,
+    //     // },
+    // }).then((res) => {
+    //     logInRequest(data);
+    //     accountDataCreate(data);
+    // }).catch((res) => {
+    //     $message.html('<span class="has-text-danger">Something went wrong and you were not signed up.</span>');
+    // });
 
-    $.ajax({
-        url: 'http://localhost:3000/account/create',
-        type: 'POST',
-        data,
-        // xhrFields: {
-        //     withCredentials: true,
-        // },
-    }).then((res) => {
+    try {
+        await $.ajax({
+            url: 'http://localhost:3000/account/create',
+            type: 'POST',
+            data,
+            // xhrFields: {
+            //     withCredentials: true,
+            // },
+        });
         logInRequest(data);
         accountDataCreate(data);
-    }).catch((res) => {
+    } catch (error) {
+        console.log(error)
         $message.html('<span class="has-text-danger">Something went wrong and you were not signed up.</span>');
-    });
+    }
 
 }
 
@@ -265,8 +280,8 @@ async function accountDataCreate(data) {
     axios
         .post(`http://localhost:3000/private/users/${data.name.toLowerCase().split('.')}`, {
             data: {
-                'firstname': data.firstname,
-                'lastname': data.lastname,
+                'firstname': data.firstName,
+                'lastname': data.lastName,
                 'email': data.email,
                 'gender': data.gender,
                 'year': data.year,
@@ -543,9 +558,10 @@ async function dynmicallyRenderGroups(groups) {
     }
 
 
-    async function renderUserPage() {
-        let uesrData = await getUserData(localStorage.getItem("name"));
-        $("#userPage").append(`<div class="background"></div>
+
+        async function renderUserPage() {
+
+            $("#userPage").append(`<div class="background"></div>
     <div class="container">
     <p class="text">Team up with someone today!</p>
         <div class="row" id="userPageBody">
@@ -583,91 +599,113 @@ async function dynmicallyRenderGroups(groups) {
             </div>
             
        </div> 
-    </div>`)
+    </div>`);
 
-        $("#userPageBody").prepend(renderOwnStudentCard(uesrData));
-        //$("#students").append(renderOwnEditStudentCard());
+            try {
+                const result = await getUserData(localStorage.getItem("name"))
+                $("#userPageBody").prepend(renderOwnStudentCard(result));
+            } catch (error) {
+                console.log(error);
+                result = error;
+            }
 
-        // async function to get all the students and render student cards individually using renderStudentCard(student)
 
-        // getName() should return name of the logged in user
-        //let ownName = getName();
 
-        // Using ownName, locate informmation for the logged in user
 
-        //reach row puts three students
-        // insert 3 into each time `<div class="row"></div>`
-    }
 
-    function renderOwnStudentCard(student) {
-        return `<div class="col" id="ownCard">
+            //$("#students").append(renderOwnEditStudentCard());
+
+            // async function to get all the students and render student cards individually using renderStudentCard(student)
+
+            // getName() should return name of the logged in user
+            //let ownName = getName();
+
+            // Using ownName, locate informmation for the logged in user
+
+            //reach row puts three students
+            // insert 3 into each time `<div class="row"></div>`
+        }
+
+        function renderOwnStudentCard(student) {
+            //console.log(student);
+            //console.log(student.bio);
+            return `<div class="col" id="ownCard">
     <div class="card" style="width: 20rem; margin-top:1rem">
         <div class="card-body">
         <h5 class="card-title lead"> <img class="mr-3 rounded resizeImg" src="icon/avatar.png" alt="Avatar"> My Profile </h5>
-        <p class="card-text">I am an easy going exchange student from Germany.</p>
+        <p class="card-text" id = "ownBio">${student.bio}</p>
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Gender: <i class="fa fa-mars fa-lg"></i></li>
-            <li class="list-group-item">Year: Second Year Grad School</li>
-            <li class="list-group-item">Major: Computer Science</li>
-            <li class="list-group-item">Relevant Skills: Java, Machine Learning</li>
+            <li class="list-group-item">Year: ${student.year}</li>
+            <li class="list-group-item">Major:${student.major}</li>
+            <li class="list-group-item">Relevant Skills: ${student.skills}</li>
         </ul>
         <div class="card-body">
             <button type="button" class="btn btn-primary btn-lg btn-block" id="editOwnCard">Edit</button>
         </div>
     </div>
 </div>`
-    }
+        }
 
 
-    function handleEditOwnCard(event) {
-        $("#ownCard").remove();
-        $('#userPage').prepend(renderOwnEditStudentCard());
-    }
+        async function handleEditOwnCard(event) {
 
-    function handleCancelEditOwnCard(event) {
-        $("#ownCard").remove();
-        $('#userPage').prepend(renderOwnStudentCard());
-    }
+            $("#ownCard").remove();
+            try {
+                const result = await getUserData(localStorage.getItem("name"));
+                console.log(result);
+                $('#userPage').prepend(renderOwnEditStudentCard(result));
+            } catch (error) {
+                console.log(error);
+                result = error;
+            }
 
-    function renderOwnEditStudentCard(student) {
-        // need logged in user information to pre fill all the values
-        // eg. <input class="input" type="text" value="${hero.firstSeen}" name="firstSeen">
+        }
 
-        return `<form class="col-sm" id="ownCard">
+        async function handleCancelEditOwnCard(event) {
+            $("#ownCard").remove();
+            handleRenderUserPage(event);
+        }
+
+        function renderOwnEditStudentCard(student) {
+            // need logged in user information to pre fill all the values
+            // eg. <input class="input" type="text" value="${hero.firstSeen}" name="firstSeen">
+            console.log(student);
+            return `<form class="col-sm" id="ownCard">
     <div class="card" style="width: 20rem;">
         <div class="card-body">
         <h5 class="card-title lead"><img class="mr-3 rounded resizeImg" src="icon/avatar.png" alt="Avatar"> My Profile </h5>
         </div>
         <ul class="list-group list-group-flush">        
-            <li class="list-group-item">Gender: <i class="fa fa-mars fa-lg"></i></li>
+            <li class="list-group-item">Gender: ${student.gender}</li>
             <br>
 
             <div class="control">
                 <div class="col form-group">
                 <label>Bio</label>
-            <textarea class="form-control" rows="2" name="bio">I am an easy going exchange student from Germany.</textarea>
+            <textarea class="form-control" rows="2" name="bio">${student.bio}</textarea>
             </div>
             </div>
 
         <div class="control">
             <div class="col form-group">
             <label>Year</label>   
-            <input type="text" class="form-control" name="Year" value="Second Year Grad School">
+            <input type="text" class="form-control" name="year" value="${student.year}">
         </div> 
         </div<<!-- form-group end.// -->
             
         <div class="control">
         <div class="col form-group">
         <label>Major</label>   
-        <input type="text" class="form-control" name="major" value="Computer Science">
+        <input type="text" class="form-control" name="major" value="${student.major}">
     </div> 
     </div><!-- form-group end.// -->
     
     <div class="control">
         <div class="col form-group">
         <label>Relevant skills</label>   
-        <input type="text" class="form-control" name="skills" value="Java, Machine Learning">
+        <input type="text" class="form-control" name="skills" value="${student.skills}">
     </div> 
     </div><!-- form-group end.// -->
         </ul>
@@ -679,10 +717,10 @@ async function dynmicallyRenderGroups(groups) {
         </div>
     </div>
 </form>`
-    }
+        }
 
-    async function renderStudentPage(students) {
-        $("#studentPage").append(`<div class="background"></div>
+        async function renderStudentPage(students) {
+            $("#studentPage").append(`<div class="background"></div>
     <div class="container">
     <p class="text">Team up with someone today!</p>
         
@@ -691,245 +729,269 @@ async function dynmicallyRenderGroups(groups) {
     </div>
 
     </div>`)
-        let counter = 0;
-        for (var student in students) {
-            console.log(counter);
-            if (counter === 0) {
-                $("#students").append(`<div class="row">${renderStudentCard(student)}</div>`);
-                counter = counter + 1;
-                //console.log(0);
+            let counter = 0;
+            for (var student in students) {
+                //console.log("student in loop");
+                //console.log(student);
+                if (counter === 0) {
+                    $("#students").append(`<div class="row">${renderStudentCard(students[student])}</div>`);
+                    counter = counter + 1;
+                    //console.log(0);
+                }
+                else {
+                    if (counter === 1) {
+                        $(".row").append(renderStudentCard(students[student]));
+                        counter = counter + 1;
+                        //console.log(1);
+                    } else {
+                        if (counter === 2) {
+                            $(".row").append(renderStudentCard(students[student]));
+                            counter = 0;
+                            //console.log(2);
+                        }
+
+                    }
+
+                }
+            }
+
+            //
+
+            //$("#students").append(renderOwnEditStudentCard());
+
+            // async function to get all the students and render student cards individually using renderStudentCard(student)
+
+            // getName() should return name of the logged in user
+            //let ownName = getName();
+
+            // Using ownName, locate informmation for the logged in user
+
+            //reach row puts three students
+            // insert 3 into each time `<div class="row"></div>`
+        }
+
+        function renderStudentCard(student) {
+            console.log(student);
+            if (student.gender === 'Male') {
+                return `<div class="col-sm">
+        <div class="card" style="width: 20rem;">
+            <div class="card-body">
+            <h5 class="card-title lead"> <img class="mr-3 rounded resizeImg" src="icon/avatar-m.png" alt="Avatar"> ${student.firstname} ${student.lastname}</h5>
+            <p class="card-text">${student.bio}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Gender: ${student.gender}</li>
+                <li class="list-group-item">Year: ${student.year}</li>
+                <li class="list-group-item">Major: ${student.major}</li>
+                <li class="list-group-item">Relevant Skills: ${student.skills}</li>
+            </ul>
+            <div class="card-body">
+                <a href="#" class="card-link">Email</a>
+            </div>
+        </div>
+    </div>`
             }
             else {
-                if (counter === 1) {
-                    $(".row").append(renderStudentCard(student));
-                    counter = counter + 1;
-                    //console.log(1);
-                } else {
-                    if (counter === 2) {
-                        $(".row").append(renderStudentCard(student));
-                        counter = 0;
-                        //console.log(2);
-                    }
-                }
-
+                return `<div class="col-sm">
+        <div class="card" style="width: 20rem;">
+            <div class="card-body">
+            <h5 class="card-title lead"> <img class="mr-3 rounded resizeImg" src="icon/avatar-f.png" alt="Avatar"> ${student.firstname} ${student.lastname}</h5>
+            <p class="card-text">${student.bio}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Gender: ${student.gender}</li>
+                <li class="list-group-item">Year: ${student.year}</li>
+                <li class="list-group-item">Major: ${student.major}</li>
+                <li class="list-group-item">Relevant Skills: ${student.skills}</li>
+            </ul>
+            <div class="card-body">
+                <a href="mailto:${student.email}" class="card-link">Email</a>
+            </div>
+        </div>
+    </div>`
             }
+        }
+        //     $("#userPage").empty();
+        //$('#groupPage').append(renderGroupPage(res));
+        // function that is called once user is logged on to render new group page
+        async function handleRenderGroupPage(res) {
+            $('#loginPage').empty();
+            $('#wallPage').empty();
+            $('#homePage').empty();
+            $('#signUpFormPage').empty();
+            $('#studentPage').empty();
+            $('#video').hide();
+            $('#homeDiv').hide();
+            $('#loggedIn').show();
+            $('#groupsDiv').show();
+            $('#studentsDiv').show();
+            $('#studentsDiv').show();
+            $('#groupPage').empty();
+            /*
+                // call getGroups function and forward result to renderGroupPage function
+                const groups = await getGroups();
+                console.log(groups);
+                renderGroupPage(groups);
+            
+                
+            */
+
+
+
+            // TO DO: we need to add an update call for users route that adds groupNumber, isGroupOwner, hasGroup
+
+            //$('#groupPage').append(renderGroupPage(res));
+        }
+
+        async function handleSubmitGroup(event) {
+            // get input from textarea to post it 
+            const $tweetRoot = $('#tweetStream');
+            let $postBox = $('#postBox');
+            const $form = $('#createGroupForm');
+            $form.submit(async function (e) {
+                e.preventDefault();
+                const dataFromForm = $form.serializeArray().reduce((accumulator, x) => {
+                    accumulator[x.name] = x.value;
+                    return accumulator;
+
+                }, {});
+
+                // call postGroup function
+                const postGroupResult = await postGroup(dataFromForm);
+                // rerender whole wallpage
+                return handleRenderGroupPage();
+            });
 
         }
-    }
-
-    //
-
-    //$("#students").append(renderOwnEditStudentCard());
-
-    // async function to get all the students and render student cards individually using renderStudentCard(student)
-
-    // getName() should return name of the logged in user
-    //let ownName = getName();
-
-    // Using ownName, locate informmation for the logged in user
-
-    //reach row puts three students
-    // insert 3 into each time `<div class="row"></div>`
-}
-
-function renderStudentCard(student) {
-    // check gender of students, use different avatar icon for male and female students
-    return `<div class="col-sm">
-    <div class="card" style="width: 20rem;">
-        <div class="card-body">
-        <h5 class="card-title lead"> <img class="mr-3 rounded resizeImg" src="icon/avatar-m.png" alt="Avatar"> Alberto Esquivias</h5>
-        <p class="card-text">I am a fun and lovable person to work with! Let's develop something and
-                create new memories ;)!</p>
-        </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">Gender: Male</li>
-            <li class="list-group-item">Year: Junior</li>
-            <li class="list-group-item">Major: Information System</li>
-            <li class="list-group-item">Relevant Skills: HTML5, CSS, JavaScript</li>
-        </ul>
-        <div class="card-body">
-            <a href="#" class="card-link">Email</a>
-        </div>
-    </div>
-</div>`
-}
-
-// function that is called once user is logged on to render new group page
-async function handleRenderGroupPage(res) {
-    $('#loginPage').empty();
-    $('#wallPage').empty();
-    $('#homePage').empty();
-    $('#signUpFormPage').empty();
-    $('#studentPage').empty();
-    $('#video').hide();
-    $('#homeDiv').hide();
-    $('#loggedIn').show();
-    $('#groupsDiv').show();
-    $('#studentsDiv').show();
-    $('#studentsDiv').show();
-    $('#groupPage').empty();
-/*
-    // call getGroups function and forward result to renderGroupPage function
-    const groups = await getGroups();
-    console.log(groups);
-    renderGroupPage(groups);
-
-    
-*/
-
-    
-
-    // TO DO: we need to add an update call for users route that adds groupNumber, isGroupOwner, hasGroup
-
-    //$('#groupPage').append(renderGroupPage(res));
-}
-
-async function handleSubmitGroup(event) {
-    // get input from textarea to post it 
-    const $tweetRoot = $('#tweetStream');
-    let $postBox = $('#postBox');
-    const $form = $('#createGroupForm');
-    $form.submit(async function (e) {
-        e.preventDefault();
-        const dataFromForm = $form.serializeArray().reduce((accumulator, x) => {
-            accumulator[x.name] = x.value;
-            return accumulator;
-
-        }, {});
-        
-        // call postGroup function
-        const postGroupResult = await postGroup(dataFromForm);
-        // rerender whole wallpage
-        return handleRenderGroupPage();
-    });
-
-}
 
 
-// function that is called once user clicks students in navbar
-async function handleRenderStudentPage() {
-    $('#loginPage').empty();
-    $('#wallPage').empty();
-    $('#homePage').empty();
-    $('#signUpFormPage').empty();
-    $('#groupPage').empty();
-    $('#video').hide();
-    $('#homeDiv').hide();
-    $('#loggedIn').show();
-    $('#groupsDiv').show();
-    $('#studentsDiv').show();
-    $('#studentPage').empty();
-    //$('#studentPage').append(renderStudentPage());
-    const students = await getStudents();
-    // call getWallPosts function and forward result to renderPost function
-    renderStudentPage(students);
-    console.log(students);
-    /*for (var i in posts) {
-        $('#tweetStream').prepend(renderWallPost(posts[i], i));
-    }*/
+        // function that is called once user clicks students in navbar
+        async function handleRenderStudentPage() {
+            $('#loginPage').empty();
+            $('#wallPage').empty();
+            $('#homePage').empty();
+            $('#signUpFormPage').empty();
+            $('#groupPage').empty();
+            $('#video').hide();
+            $('#homeDiv').hide();
+            $('#loggedIn').show();
+            $('#groupsDiv').show();
+            $('#studentsDiv').show();
+            $('#studentPage').empty();
+            $('#userPage').empty();
+
+            //$('#studentPage').append(renderStudentPage());
+            const students = await getStudents();
+            // call getWallPosts function and forward result to renderPost function
+            renderStudentPage(students);
+            //console.log(students);
+            /*for (var i in posts) {
+                $('#tweetStream').prepend(renderWallPost(posts[i], i));
+            }*/
 
 
-}
+        }
 
-async function getGroups() {
-    const result = await axios({
-        method: 'get',
-        headers: { Authorization: `Bearer ${getToken()}` },
-        url: 'http://localhost:3000/private/groups',
-    });
-    console.log(result);
-    console.log(result.data.result);
-    return result.data.result;
-};
+        async function getGroups() {
+            const result = await axios({
+                method: 'get',
+                headers: { Authorization: `Bearer ${getToken()}` },
+                url: 'http://localhost:3000/private/groups',
+            });
+            console.log(result);
+            console.log(result.data.result);
+            return result.data.result;
+        };
 
 
-async function postGroup(data) {
-    const result = await axios({
-            method: 'post',
-            headers: { Authorization: `Bearer ${getToken()}` },
-            url: `http://localhost:3000/private/groups/${Date.now()}`,
-            data: {
+        async function postGroup(data) {
+            const result = await axios({
+                method: 'post',
+                headers: { Authorization: `Bearer ${getToken()}` },
+                url: `http://localhost:3000/private/groups/${Date.now()}`,
                 data: {
-                    groupName: data.groupName,
-                    groupMembers: [localStorage.getItem('name')],
-                    groupOwner: localStorage.getItem('name'),
-                    groupCapacity: data.maxCapacity 
-                }
-            },
-        });
-        console.log(result);
-        return result;
-    }
-    
+                    data: {
+                        groupName: data.groupName,
+                        groupMembers: [localStorage.getItem('name')],
+                        groupOwner: localStorage.getItem('name'),
+                        groupCapacity: data.maxCapacity
+                    }
+                },
+            });
+            console.log(result);
+            return result;
+        }
 
 
-async function getStudents() {
-    const result = await axios({
-        method: 'get',
-        headers: { Authorization: `Bearer ${getToken()}` },
-        url: 'http://localhost:3000/private/users',
-    });
-    console.log(result);
-    console.log(result.data.result);
-    return result.data.result;
-};
 
-function handleRenderUserPage() {
-    $('#loginPage').empty();
-    $('#wallPage').empty();
-    $('#homePage').empty();
-    $('#signUpFormPage').empty();
-    $('#groupPage').empty();
-    $('#video').hide();
-    $('#homeDiv').hide();
-    $('#loggedIn').show();
-    $('#groupsDiv').show();
-    $('#studentsDiv').show();
-    $('#userPage').empty();
-    $('#userPage').append(renderUserPage());
-}
+        async function getStudents() {
+            const result = await axios({
+                method: 'get',
+                headers: { Authorization: `Bearer ${getToken()}` },
+                url: 'http://localhost:3000/private/users',
+            });
+            //console.log(result);
+            //console.log(result.data.result);
+            return result.data.result;
+        };
 
-// function that is called after click on logout button
-function handleLogout() {
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('name');
-    $('#loggedIn').hide();
-    $('#groupsDiv').hide();
-    $('#studentsDiv').hide();
+        function handleRenderUserPage() {
+            $('#loginPage').empty();
+            $('#wallPage').empty();
+            $('#homePage').empty();
+            $('#signUpFormPage').empty();
+            $('#groupPage').empty();
+            $('#video').hide();
+            $('#homeDiv').hide();
+            $('#loggedIn').show();
+            $('#groupsDiv').show();
+            $('#studentsDiv').show();
+            $('#userPage').empty();
+            $('#studentPage').empty();
+            $('#userPage').append(renderUserPage());
+        }
 
-    $('#homeDiv').show();
-    handleRenderHome();
-}
-
-
-// helper function to calc the time difference
-function diff_minutes(datenow, tweetTS) {
-    let diff = (datenow - tweetTS) / 1000;
-    diff /= 60;
-    return Math.abs(Math.round(diff));
-}
+        // function that is called after click on logout button
+        function handleLogout() {
+            localStorage.removeItem('jwt');
+            localStorage.removeItem('name');
+            $('#loggedIn').hide();
+            $('#groupsDiv').hide();
+            $('#studentsDiv').hide();
+            $('#studentPage').empty();
+            $('#userPage').empty();
+            $('#homeDiv').show();
+            handleRenderHome();
+        }
 
 
-async function getStatus() {
-    try {
-        const result = await axios({
-            method: 'get',
-            headers: { Authorization: `Bearer ${getToken()}` },
-            url: 'http://localhost:3000/account/status',
-        });
-        return result.data;
-    } catch (error) {
-        return false;
-    }
-};
+        // helper function to calc the time difference
+        function diff_minutes(datenow, tweetTS) {
+            let diff = (datenow - tweetTS) / 1000;
+            diff /= 60;
+            return Math.abs(Math.round(diff));
+        }
 
 
-const getToken = () => {
-    let token = localStorage.getItem('jwt');
-    return token;
-}
+        async function getStatus() {
+            try {
+                const result = await axios({
+                    method: 'get',
+                    headers: { Authorization: `Bearer ${getToken()}` },
+                    url: 'http://localhost:3000/account/status',
+                });
+                return result.data;
+            } catch (error) {
+                return false;
+            }
+        };
 
-const setToken = (jwtToken) => {
-    token = jwtToken;
-    localStorage.setItem('jwt', token);
-}
+        const getToken = () => {
+            let token = localStorage.getItem('jwt');
+            return token;
+        }
+
+        const setToken = (jwtToken) => {
+            token = jwtToken;
+            localStorage.setItem('jwt', token);
+        }
