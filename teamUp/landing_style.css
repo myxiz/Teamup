@@ -414,3 +414,7 @@ body {
   #deleteToDoButton{
     background-color: #7BAFD4;
   }
+
+  #buttonGroup{
+    text-align: center;
+  }

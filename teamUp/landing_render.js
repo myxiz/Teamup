@@ -10,6 +10,9 @@ $(document).ready(async () => {
     $('#content').on("click", "#signup", handleRenderSignUp);
     $('#content').on("click", "#signupButton", handleSignup);
     $('#loggedIn').on("click", "#logout", handleLogout);
+    $('#content').on("click", "#editOwnCard", handleEditOwnCard);
+    $('#content').on("click", "#canelEditingOwnCard", handleCancelEditOwnCard);
+
 
 })
 
@@ -180,6 +183,7 @@ function renderSignUpPage() {
                 <option>Sophomore</option>
                 <option selected="">Junior</option>
                 <option>Senior</option>
+                <option>Grad School</option>
                 </select>
             </div> <!-- form-group end.// -->
         </div> <!-- form-row.// -->
@@ -431,7 +435,7 @@ function renderGroupPage() {
         <!-- group cards to be inserted dynamically -->
         <div id="groups"> </div>
     </div>`)
-    
+
 }
 
 // render student page
@@ -465,12 +469,17 @@ function renderStudentPage() {
         </ul>
 
         <!-- student cards to be inserted dynamically here -->
-        <div id="students"> </div>`)
+        <div id="students"> 
+        
+        </div>`)
+
+        $("#students").append(renderOwnStudentCard());
+        //$("#students").append(renderOwnEditStudentCard());
 
     // async function to get all the students and render student cards individually using renderStudentCard(student)
 
     // getName() should return name of the logged in user
-    let ownName = getName();
+    //let ownName = getName();
 
     // Using ownName, locate informmation for the logged in user
 
@@ -482,8 +491,8 @@ function renderOwnStudentCard(student) {
     return `<div class="col-sm" id="ownCard">
     <div class="card" style="width: 20rem;">
         <div class="card-body">
-            <h5 class="card-title lead">Max Barth</h5>
-            <p class="card-text">I am an easy going exchange student from Germany.</p>
+        <h5 class="card-title lead"> <img class="mr-3 rounded resizeImg" src="icon/avatar.png" alt="Avatar"> My Profile </h5>
+        <p class="card-text">I am an easy going exchange student from Germany.</p>
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Gender: <i class="fa fa-mars fa-lg"></i></li>
@@ -492,19 +501,83 @@ function renderOwnStudentCard(student) {
             <li class="list-group-item">Relevant Skills: Java, Machine Learning</li>
         </ul>
         <div class="card-body">
-            <button type="button" class="btn btn-primary btn-lg btn-block">Edit</button>
+            <button type="button" class="btn btn-primary btn-lg btn-block" id="editOwnCard">Edit</button>
         </div>
     </div>
 </div>`
 }
 
 
+function handleEditOwnCard(event){
+    $("#ownCard").remove();
+    $('#students').prepend(renderOwnEditStudentCard());
+}
+
+function handleCancelEditOwnCard(event){
+    $("#ownCard").remove();
+    $('#students').prepend(renderOwnStudentCard());
+}
+
+function renderOwnEditStudentCard(student){
+    // need logged in user information to pre fill all the values
+    // eg. <input class="input" type="text" value="${hero.firstSeen}" name="firstSeen">
+
+    return `<form class="col-sm" id="ownCard">
+    <div class="card" style="width: 20rem;">
+        <div class="card-body">
+        <h5 class="card-title lead"><img class="mr-3 rounded resizeImg" src="icon/avatar.png" alt="Avatar"> My Profile </h5>
+        </div>
+        <ul class="list-group list-group-flush">        
+            <li class="list-group-item">Gender: <i class="fa fa-mars fa-lg"></i></li>
+            <br>
+
+            <div class="control">
+                <div class="col form-group">
+                <label>Bio</label>
+            <textarea class="form-control" rows="2" name="bio">I am an easy going exchange student from Germany.</textarea>
+            </div>
+            </div>
+
+        <div class="control">
+            <div class="col form-group">
+            <label>Year</label>   
+            <input type="text" class="form-control" name="Year" value="Second Year Grad School">
+        </div> 
+        </div<<!-- form-group end.// -->
+            
+        <div class="control">
+        <div class="col form-group">
+        <label>Major</label>   
+        <input type="text" class="form-control" name="major" value="Computer Science">
+    </div> 
+    </div><!-- form-group end.// -->
+    
+    <div class="control">
+        <div class="col form-group">
+        <label>Relevant skills</label>   
+        <input type="text" class="form-control" name="skills" value="Java, Machine Learning">
+    </div> 
+    </div><!-- form-group end.// -->
+        </ul>
+        <div class="card-body">
+            <div class="btn-group float-right" role="group" id="buttonGroup">
+                <button type="button" class="btn btn-primary mr-2" id="doneEditingOwnCard">Done</button>
+                <button type="button" class="btn btn-danger mr-2" id="canelEditingOwnCard">Cancel</button>
+            </div>
+        </div>
+    </div>
+</form>`
+}
+
+
+
 function renderStudentCard(student) {
+    // check gender of students, use different avatar icon for male and female students
     return `<div class="col-sm">
     <div class="card" style="width: 20rem;">
         <div class="card-body">
-            <h5 class="card-title">Alberto Esquivias</h5>
-            <p class="card-text">I am a fun and lovable person to work with! Let's develop something and
+        <h5 class="card-title lead"> <img class="mr-3 rounded resizeImg" src="icon/avatar-m.png" alt="Avatar"> Alberto Esquivias</h5>
+        <p class="card-text">I am a fun and lovable person to work with! Let's develop something and
                 create new memories ;)!</p>
         </div>
         <ul class="list-group list-group-flush">
@@ -514,7 +587,6 @@ function renderStudentCard(student) {
             <li class="list-group-item">Relevant Skills: HTML5, CSS, JavaScript</li>
         </ul>
         <div class="card-body">
-            <a href="#" class="card-link">Facebook</a>
             <a href="#" class="card-link">Email</a>
         </div>
     </div>
