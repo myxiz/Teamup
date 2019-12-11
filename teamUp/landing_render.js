@@ -599,8 +599,8 @@ async function renderUserPage() {
 }
 
 function renderOwnStudentCard(student) {
-    console.log(student);
-    console.log(student.bio);
+    //console.log(student);
+    //console.log(student.bio);
     return `<div class="col" id="ownCard">
     <div class="card" style="width: 20rem; margin-top:1rem">
         <div class="card-body">
@@ -621,54 +621,63 @@ function renderOwnStudentCard(student) {
 }
 
 
-function handleEditOwnCard(event) {
+async function handleEditOwnCard(event) {
+    
     $("#ownCard").remove();
-    $('#userPage').prepend(renderOwnEditStudentCard());
+    try {
+        const result = await getUserData(localStorage.getItem("name"));
+        console.log(result);
+        $('#userPage').prepend(renderOwnEditStudentCard(result));
+     } catch (error) {
+         console.log(error);
+         result = error;
+     }  
+    
 }
 
-function handleCancelEditOwnCard(event) {
+async function handleCancelEditOwnCard(event) {
     $("#ownCard").remove();
-    $('#userPage').prepend(renderOwnStudentCard());
+    handleRenderUserPage(event);
 }
 
 function renderOwnEditStudentCard(student) {
     // need logged in user information to pre fill all the values
     // eg. <input class="input" type="text" value="${hero.firstSeen}" name="firstSeen">
-
+    console.log(student);
     return `<form class="col-sm" id="ownCard">
     <div class="card" style="width: 20rem;">
         <div class="card-body">
         <h5 class="card-title lead"><img class="mr-3 rounded resizeImg" src="icon/avatar.png" alt="Avatar"> My Profile </h5>
         </div>
         <ul class="list-group list-group-flush">        
-            <li class="list-group-item">Gender: <i class="fa fa-mars fa-lg"></i></li>
+            <li class="list-group-item">Gender: ${student.gender}</li>
             <br>
 
             <div class="control">
                 <div class="col form-group">
                 <label>Bio</label>
-            <textarea class="form-control" rows="2" name="bio">I am an easy going exchange student from Germany.</textarea>
+            <textarea class="form-control" rows="2" name="bio">${student.bio}</textarea>
             </div>
             </div>
 
         <div class="control">
             <div class="col form-group">
             <label>Year</label>   
-            <input type="text" class="form-control" name="Year" value="Second Year Grad School">
+            <input type="text" class="form-control" name="year" value="${student.year}">
         </div> 
         </div<<!-- form-group end.// -->
             
         <div class="control">
         <div class="col form-group">
         <label>Major</label>   
-        <input type="text" class="form-control" name="major" value="Computer Science">
+        <input type="text" class="form-control" name="major" value="${student.major}">
     </div> 
     </div><!-- form-group end.// -->
     
     <div class="control">
         <div class="col form-group">
         <label>Relevant skills</label>   
-        <input type="text" class="form-control" name="skills" value="Java, Machine Learning">
+        <input type="text" class="form-control" name="skills" value="${student.skills}">
     </div> 
     </div><!-- form-group end.// -->
         </ul>
@@ -790,6 +799,7 @@ function handleRenderGroupPage(res) {
     $('#studentsDiv').show();
     $('#studentsDiv').show();
     $('#groupPage').empty();
+    $("#userPage").empty();
     $('#groupPage').append(renderGroupPage(res));
 
 
