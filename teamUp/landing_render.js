@@ -120,7 +120,7 @@ async function logInRequest(data) {
         $message.html(`<span class="has-text-success">Success! You are now logged in.</span>`);
         // Store the jwt token from the response to use it later on for authorization 
         localStorage.setItem('jwt', res.jwt);
-        localStorage.setItem('name',res.name);
+        localStorage.setItem('name', res.name);
         handleRenderGroupPage();
         // Call the rerenderFunction (to be written) to show GroupPage including a logoff button in navbar
         //rerender();
@@ -469,7 +469,7 @@ function renderGroupPage() {
         <!-- group cards to be inserted dynamically -->
         <div id="groups"> </div>`)
 
-        $("#groups").append(renderGroupCard());
+    $("#groups").append(renderGroupCard());
 
 }
 
@@ -534,8 +534,8 @@ function renderUserPage() {
        </div> 
     </div>`)
 
-        $("#userPage").prepend(renderOwnStudentCard());
-        //$("#students").append(renderOwnEditStudentCard());
+    $("#userPage").prepend(renderOwnStudentCard());
+    //$("#students").append(renderOwnEditStudentCard());
 
     // async function to get all the students and render student cards individually using renderStudentCard(student)
 
@@ -630,7 +630,56 @@ function renderOwnEditStudentCard(student) {
 </form>`
 }
 
+async function renderStudentPage(students) {
+    $("#studentPage").append(`<div class="background"></div>
+    <div class="container">
+    <p class="text">Team up with someone today!</p>
+        
+    <div id="students">
 
+    </div>
+
+    </div>`)
+    let counter = 0;
+    for (var student in students) {
+        console.log(counter);
+        if (counter === 0) {
+            $("#students").append(`<div class="row">${renderStudentCard(student)}</div>`);
+            counter = counter + 1;
+            //console.log(0);
+        }
+        else {
+            if (counter === 1) {
+                $(".row").append(renderStudentCard(student));
+                counter = counter + 1;
+                //console.log(1);
+            } else {
+                if (counter === 2) {
+                    $(".row").append(renderStudentCard(student));
+                    counter = 0;
+                    //console.log(2);
+                }
+            }
+
+        }
+
+
+    }
+
+    //
+
+    //$("#students").append(renderOwnEditStudentCard());
+
+    // async function to get all the students and render student cards individually using renderStudentCard(student)
+
+    // getName() should return name of the logged in user
+    //let ownName = getName();
+
+    // Using ownName, locate informmation for the logged in user
+
+    //reach row puts three students
+    // insert 3 into each time `<div class="row"></div>`
+}
 
 function renderStudentCard(student) {
     // check gender of students, use different avatar icon for male and female students
@@ -674,7 +723,7 @@ function handleRenderGroupPage(res) {
 }
 
 // function that is called once user clicks students in navbar
-function handleRenderStudentPage() {
+async function handleRenderStudentPage() {
     $('#loginPage').empty();
     $('#wallPage').empty();
     $('#homePage').empty();
@@ -686,8 +735,28 @@ function handleRenderStudentPage() {
     $('#groupsDiv').show();
     $('#studentsDiv').show();
     $('#studentPage').empty();
-    $('#studentPage').append(renderStudentPage());
+    //$('#studentPage').append(renderStudentPage());
+    const students = await getStudents();
+    // call getWallPosts function and forward result to renderPost function
+    renderStudentPage(students);
+    console.log(students);
+    /*for (var i in posts) {
+        $('#tweetStream').prepend(renderWallPost(posts[i], i));
+    }*/
+
+
 }
+
+async function getStudents() {
+    const result = await axios({
+        method: 'get',
+        headers: { Authorization: `Bearer ${getToken()}` },
+        url: 'http://localhost:3000/private/users',
+    });
+    console.log(result);
+    console.log(result.data.result);
+    return result.data.result;
+};
 
 function handleRenderUserPage() {
     $('#loginPage').empty();

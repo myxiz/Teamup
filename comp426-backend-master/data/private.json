@@ -37,6 +37,13 @@
       "year": "Junior",
       "bio": "re",
       "major": "re"
+    },
+    "mabarth": {
+      "email": "mabarth@live.unc.edu",
+      "gender": "Male",
+      "year": "Junior",
+      "bio": "Hello I am a student from Germany",
+      "major": "Computer Science"
     }
   }
 }
