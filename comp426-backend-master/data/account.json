@@ -11,6 +11,9 @@
     },
     "jinsingsangsung": {
       "passwordHash": "$2b$10$.L2htfGgnDYXAU48Q/Y/eOJX7c6s2KGJ7TlqjPY3uMcCoePRNgJAq"
+    },
+    "jevans": {
+      "passwordHash": "$2b$10$axyZq9cvIE1nMNduCqvWA.sf7UT2GCv6E0jFEKZvAlwn/sldLAvLK"
     }
   }
 }
