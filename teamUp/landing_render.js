@@ -595,7 +595,7 @@ async function handleEditOwnCard(event) {
     try {
         const result = await getUserData(localStorage.getItem("name"));
         console.log(result);
-        $('#userPageBody').prepend(renderOwnEditStudentCard(result));
+        $('#userPage').prepend(renderOwnEditStudentCard(result));
      } catch (error) {
          console.log(error);
          result = error;
