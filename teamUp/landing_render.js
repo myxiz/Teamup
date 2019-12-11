@@ -13,7 +13,7 @@ $(document).ready(async () => {
     $('#content').on("click", "#editOwnCard", handleEditOwnCard);
     $('#content').on("click", "#canelEditingOwnCard", handleCancelEditOwnCard);
     $('#content').on("click", "#submitPostButton", handleSubmitPostPress);
-    $('#content').on("click", "#createGroupButton", handleRenderGroupPage);
+
 
 })
 
@@ -445,16 +445,15 @@ function renderGroupPage() {
     $("#groupPage").append(`<div class="background"></div>
     <div class="container"> 
         <p class="text">Team up with someone today!</p>
-        
-
-        <!-- Form to create a group-->
+        <!-- create group form -->
         <form  class="form-horizontal" role="form" id="createGroupForm" >    
             <div class="form-row">
                 <div class="col form-group">
                     <label>Group Name</label>   
                     <input type="text" class="form-control" name="groupName">
-                </div>
-                <div class = "col form-group">
+                </div> <!-- form-group end.// -->
+            
+            <div class = "col form-group">
                     <label>Maximum Capacity</label>
                     <select id="inputGender" class="form-control" name="maxCapacity">
                     <option> Choose...</option>
@@ -462,22 +461,22 @@ function renderGroupPage() {
                     <option>4</option>
                     <option>5</option>
                     </select>
-                </div>
+                </div> <!-- form-group end.// -->
             </div>
+
             <div class="form-row">
                 <div class="form-group">
                     <button type="button" class="btn btn-primary btn-lg btn-block" id="createGroupButton">Create Group</button>
-                </div>    
+                </div> <!-- form-group// -->       
             </div>
         </form>
 
 
 
         <!-- group cards to be inserted dynamically -->
-        <div id="groups"> 
-        
-        </div>`)
+        <div id="groups"> </div>`)
 
+    $("#groups").append(renderGroupCard());
 
 }
 
@@ -500,52 +499,23 @@ function renderGroupCard(group) {
       </div>`
 }
 
-
-async function dynmicallyRenderGroups(groups) {
-    let counter = 0;
-    for (var group in groups) {
-        console.log(counter);
-        if (counter === 0) {
-            $("#groups").append(`<div class="row">${renderGroupCard(groups[group])}</div>`);
-            counter++;
-            //console.log(0);
-        }
-        else {
-            if (counter === 1) {
-                $(".row").append(renderGroupCard(groups[group]));
-                counter++;
-                //console.log(1);
-            } else {
-                if (counter === 2) {
-                    $(".row").append(renderGroupCard(groups[group]));
-                    counter = 0;
-                    //console.log(2);
-                }
-            }
-
-        }
-
-
+// render student page
+async function getUserData(name){
+    $.ajax({
+        url: `http://localhost:3000/private/users/${name}`,
+        type: 'GET',
+        headers:{ Authorization: `Bearer ${getToken()}` },
+    }).then((res)=>{
+        alert(res.result)
     }
+        
+    )
+}
 
 
-    // render student page
-    async function getUserData(name) {
-        $.ajax({
-            url: `http://localhost:3000/private/users/${name}`,
-            type: 'GET',
-            headers: { Authorization: `Bearer ${getToken()}` },
-        }).then((res) => {
-            alert(res.result)
-        }
-
-        )
-    }
-
-
-    async function renderUserPage() {
-        let uesrData = await getUserData(localStorage.getItem("name"));
-        $("#userPage").append(`<div class="background"></div>
+async function renderUserPage() {
+    let uesrData = await getUserData(localStorage.getItem("name"));
+    $("#userPage").append(`<div class="background"></div>
     <div class="container">
     <p class="text">Team up with someone today!</p>
         <div class="row" id="userPageBody">
@@ -588,19 +558,19 @@ async function dynmicallyRenderGroups(groups) {
         $("#userPageBody").prepend(renderOwnStudentCard(uesrData));
         //$("#students").append(renderOwnEditStudentCard());
 
-        // async function to get all the students and render student cards individually using renderStudentCard(student)
+    // async function to get all the students and render student cards individually using renderStudentCard(student)
 
-        // getName() should return name of the logged in user
-        //let ownName = getName();
+    // getName() should return name of the logged in user
+    //let ownName = getName();
 
-        // Using ownName, locate informmation for the logged in user
+    // Using ownName, locate informmation for the logged in user
 
-        //reach row puts three students
-        // insert 3 into each time `<div class="row"></div>`
-    }
+    //reach row puts three students
+    // insert 3 into each time `<div class="row"></div>`
+}
 
-    function renderOwnStudentCard(student) {
-        return `<div class="col" id="ownCard">
+function renderOwnStudentCard(student) {
+    return `<div class="col" id="ownCard">
     <div class="card" style="width: 20rem; margin-top:1rem">
         <div class="card-body">
         <h5 class="card-title lead"> <img class="mr-3 rounded resizeImg" src="icon/avatar.png" alt="Avatar"> My Profile </h5>
@@ -617,24 +587,24 @@ async function dynmicallyRenderGroups(groups) {
         </div>
     </div>
 </div>`
-    }
+}
 
 
-    function handleEditOwnCard(event) {
-        $("#ownCard").remove();
-        $('#userPage').prepend(renderOwnEditStudentCard());
-    }
+function handleEditOwnCard(event) {
+    $("#ownCard").remove();
+    $('#userPage').prepend(renderOwnEditStudentCard());
+}
 
-    function handleCancelEditOwnCard(event) {
-        $("#ownCard").remove();
-        $('#userPage').prepend(renderOwnStudentCard());
-    }
+function handleCancelEditOwnCard(event) {
+    $("#ownCard").remove();
+    $('#userPage').prepend(renderOwnStudentCard());
+}
 
-    function renderOwnEditStudentCard(student) {
-        // need logged in user information to pre fill all the values
-        // eg. <input class="input" type="text" value="${hero.firstSeen}" name="firstSeen">
+function renderOwnEditStudentCard(student) {
+    // need logged in user information to pre fill all the values
+    // eg. <input class="input" type="text" value="${hero.firstSeen}" name="firstSeen">
 
-        return `<form class="col-sm" id="ownCard">
+    return `<form class="col-sm" id="ownCard">
     <div class="card" style="width: 20rem;">
         <div class="card-body">
         <h5 class="card-title lead"><img class="mr-3 rounded resizeImg" src="icon/avatar.png" alt="Avatar"> My Profile </h5>
@@ -679,10 +649,10 @@ async function dynmicallyRenderGroups(groups) {
         </div>
     </div>
 </form>`
-    }
+}
 
-    async function renderStudentPage(students) {
-        $("#studentPage").append(`<div class="background"></div>
+async function renderStudentPage(students) {
+    $("#studentPage").append(`<div class="background"></div>
     <div class="container">
     <p class="text">Team up with someone today!</p>
         
@@ -691,30 +661,30 @@ async function dynmicallyRenderGroups(groups) {
     </div>
 
     </div>`)
-        let counter = 0;
-        for (var student in students) {
-            console.log(counter);
-            if (counter === 0) {
-                $("#students").append(`<div class="row">${renderStudentCard(student)}</div>`);
+    let counter = 0;
+    for (var student in students) {
+        console.log(counter);
+        if (counter === 0) {
+            $("#students").append(`<div class="row">${renderStudentCard(student)}</div>`);
+            counter = counter + 1;
+            //console.log(0);
+        }
+        else {
+            if (counter === 1) {
+                $(".row").append(renderStudentCard(student));
                 counter = counter + 1;
-                //console.log(0);
-            }
-            else {
-                if (counter === 1) {
+                //console.log(1);
+            } else {
+                if (counter === 2) {
                     $(".row").append(renderStudentCard(student));
-                    counter = counter + 1;
-                    //console.log(1);
-                } else {
-                    if (counter === 2) {
-                        $(".row").append(renderStudentCard(student));
-                        counter = 0;
-                        //console.log(2);
-                    }
+                    counter = 0;
+                    //console.log(2);
                 }
-
             }
 
         }
+
+
     }
 
     //
@@ -755,7 +725,7 @@ function renderStudentCard(student) {
 }
 
 // function that is called once user is logged on to render new group page
-async function handleRenderGroupPage(res) {
+function handleRenderGroupPage(res) {
     $('#loginPage').empty();
     $('#wallPage').empty();
     $('#homePage').empty();
@@ -768,43 +738,10 @@ async function handleRenderGroupPage(res) {
     $('#studentsDiv').show();
     $('#studentsDiv').show();
     $('#groupPage').empty();
-/*
-    // call getGroups function and forward result to renderGroupPage function
-    const groups = await getGroups();
-    console.log(groups);
-    renderGroupPage(groups);
+    $('#groupPage').append(renderGroupPage(res));
 
-    
-*/
-
-    
-
-    // TO DO: we need to add an update call for users route that adds groupNumber, isGroupOwner, hasGroup
-
-    //$('#groupPage').append(renderGroupPage(res));
-}
-
-async function handleSubmitGroup(event) {
-    // get input from textarea to post it 
-    const $tweetRoot = $('#tweetStream');
-    let $postBox = $('#postBox');
-    const $form = $('#createGroupForm');
-    $form.submit(async function (e) {
-        e.preventDefault();
-        const dataFromForm = $form.serializeArray().reduce((accumulator, x) => {
-            accumulator[x.name] = x.value;
-            return accumulator;
-
-        }, {});
-        
-        // call postGroup function
-        const postGroupResult = await postGroup(dataFromForm);
-        // rerender whole wallpage
-        return handleRenderGroupPage();
-    });
 
 }
-
 
 // function that is called once user clicks students in navbar
 async function handleRenderStudentPage() {
@@ -830,38 +767,6 @@ async function handleRenderStudentPage() {
 
 
 }
-
-async function getGroups() {
-    const result = await axios({
-        method: 'get',
-        headers: { Authorization: `Bearer ${getToken()}` },
-        url: 'http://localhost:3000/private/groups',
-    });
-    console.log(result);
-    console.log(result.data.result);
-    return result.data.result;
-};
-
-
-async function postGroup(data) {
-    const result = await axios({
-            method: 'post',
-            headers: { Authorization: `Bearer ${getToken()}` },
-            url: `http://localhost:3000/private/groups/${Date.now()}`,
-            data: {
-                data: {
-                    groupName: data.groupName,
-                    groupMembers: [localStorage.getItem('name')],
-                    groupOwner: localStorage.getItem('name'),
-                    groupCapacity: data.maxCapacity 
-                }
-            },
-        });
-        console.log(result);
-        return result;
-    }
-    
-
 
 async function getStudents() {
     const result = await axios({
@@ -896,7 +801,7 @@ function handleLogout() {
     $('#loggedIn').hide();
     $('#groupsDiv').hide();
     $('#studentsDiv').hide();
-
+    
     $('#homeDiv').show();
     handleRenderHome();
 }
