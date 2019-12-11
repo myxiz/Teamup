@@ -555,8 +555,8 @@ async function renderUserPage() {
        </div> 
     </div>`)
 
-        $("#userPageBody").prepend(renderOwnStudentCard(uesrData));
-        //$("#students").append(renderOwnEditStudentCard());
+    $("#userPageBody").prepend(renderOwnStudentCard(uesrData));
+    //$("#students").append(renderOwnEditStudentCard());
 
     // async function to get all the students and render student cards individually using renderStudentCard(student)
 
