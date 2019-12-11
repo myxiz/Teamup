@@ -418,3 +418,13 @@ body {
   #buttonGroup{
     text-align: center;
   }
+
+
+  #editOwnCard{
+    background-color: #13294B;
+    color:white;   
+  }
+  #canelEditingOwnCard{
+    background-color: #000;
+    color: white;
+  }
