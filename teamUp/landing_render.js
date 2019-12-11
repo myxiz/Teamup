@@ -499,19 +499,8 @@ function renderGroupCard(group) {
       </div>`
 }
 
-<<<<<<< HEAD
+
 // render student page
-<<<<<<< HEAD
-async function getUserData(name){
-    $.ajax({
-        url: `http://localhost:3000/private/users/${name}`,
-        type: 'GET',
-        headers:{ Authorization: `Bearer ${getToken()}` },
-    }).then((res)=>{
-        alert(res.result)
-    }
-        
-=======
 async function getUserData(name) {
     $.ajax({
         url: `http://localhost:3000/private/users/${name}`,
@@ -521,10 +510,9 @@ async function getUserData(name) {
         alert(res.result)
     }
 
->>>>>>> parent of 19356d4... Merge branch 'master' of https://github.com/QFS8xrnnMGdY5C/UNC-426MWP-TeamUp
     )
 }
-=======
+
 
 async function dynmicallyRenderGroups(groups) {
     let counter = 0;
@@ -552,23 +540,23 @@ async function dynmicallyRenderGroups(groups) {
 
 
     }
-
+}
 
     // render student page
-    async function getUserData(name) {
-        $.ajax({
-            url: `http://localhost:3000/private/users/${name}`,
-            type: 'GET',
-            headers: { Authorization: `Bearer ${getToken()}` },
-        }).then((res) => {
-            alert(res.result)
-        }
-
-        )
+async function getUserData(name) {
+    $.ajax({
+        url: `http://localhost:3000/private/users/${name}`,
+        type: 'GET',
+        headers: { Authorization: `Bearer ${getToken()}` },
+    }).then((res) => {
+        alert(res.result)
     }
 
+    )
+}
 
->>>>>>> parent of bfc4402... Update landing_render.js
+
+
 
 
 async function renderUserPage() {
