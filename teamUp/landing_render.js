@@ -12,6 +12,7 @@ $(document).ready(async () => {
     $('#loggedIn').on("click", "#logout", handleLogout);
     $('#content').on("click", "#editOwnCard", handleEditOwnCard);
     $('#content').on("click", "#canelEditingOwnCard", handleCancelEditOwnCard);
+    $('#content').on("click", "#submitPostButton", handleSubmitPostPress);
 
 
 })
@@ -25,7 +26,7 @@ function renderHomePage() {
 
         <!-- Tagline -->
         <div class="landing-text">
-            "TEAMWORK MAKE THE DREAM WORK" - Form your dream team with TEAMUP today!
+            "TEAMWORK MAKES THE DREAM WORK" - Form your dream team with TEAMUP today!
         </div>
         <br>
         <br>
@@ -132,8 +133,6 @@ async function logInRequest(data) {
         $message.html('<span class="has-text-danger">Something went wrong and you were not logged in. Check your email and password and your internet connection.</span>');
     });
 }
-
-
 
 // render sign up page
 function renderSignUpPage() {
@@ -290,13 +289,13 @@ function renderWall() {
             <div class="field">
                 <div class="control">
                     <textarea class="form-control" placeholder="Share with us what's on your mind right now?" rows="2"
-                        name="body" id="postBox"></textarea>
+                        name="data" id="postBox"></textarea>
                     <br>
                 </div>
             </div>
             <div class="field">
                 <div class="control">
-                <button class="btn-dark btn" type="submit">Post</button>
+                <button class="btn-dark btn" id="submitPostButton">Post</button>
                 </div>
             </div>
         </form>
@@ -314,19 +313,21 @@ function renderWall() {
 }
 
 function renderWallPost(post, i) {
-    let timeDiff = diff_minutes(Date.now(), new Date(post.data.date));
+    // time difference is not working right now due change in i. Please keep code below for later though.
+    // let timeDiff = diff_minutes(Date.now(), new Date(i));    ---  ${timeDiff}
     return `
     <li class="media" id="${i}">
         <img class="mr-3 rounded resizeImg" src="icon/avatar.png" alt="Avatar">
         <div class="media-body">
-            <h5 class="mt-0 mb-1">Anonymous <small>${timeDiff}m</small></h5>
-            ${post.data.text}
+            <h5 class="mt-0 mb-1">Anonymous <small></small></h5>
+            ${post.text}
         </div>
     </li><br>`
 }
 
-// delete the post from backend
-async function handleDeleteWallPost(event) {
+
+// delete the post from backend - this is currently not implemented, but might be later on
+async function deleteWallPost(i) {
     const result = await axios({
         method: 'delete',
         url: 'http://localhost:3000/public/delete/i',
@@ -337,7 +338,9 @@ async function handleDeleteWallPost(event) {
 
 // callback function to render Wall
 async function handleRenderWall(event) {
-    event.preventDefault();
+    if (event) {
+        event.preventDefault();
+    }
     $('#loginPage').empty();
     $('#signUpFormPage').empty();
     $('#wallPage').empty();
@@ -354,42 +357,57 @@ async function handleRenderWall(event) {
     })
     $('#joke').append("Just for the giggles: " + result.data.value.joke);
 
-
     // call getWallPosts function and forward result to renderPost function
     const posts = await getWallPosts();
     console.log(posts);
-    for (let i = 0; i < Object.keys(posts).length; i++) {
-        //console.log(posts[i]);
+    for (var i in posts) {
         $('#tweetStream').prepend(renderWallPost(posts[i], i));
     }
-
-
-    // Public: conduct post to wall
-    const $form = $('#tweetForm');
-    $form.submit(function (e) {
-        e.preventDefault();
-
-        const data = $form.serializeArray().reduce((accumulator, x) => {
-            accumulator[x.name] = x.value;
-            return accumulator;
-        }, {});
-
-        $.ajax({
-            url: 'http://localhost:3000/public/wallposts',
-            type: 'POST',
-            data,
-        }).then((res) => {
-            console.log(res.post);
-            $('#tweetStream').prepend(renderWallPost(res.post));
-            $('#postBox').replaceWith(`<textarea class="form-control" placeholder="Share with us what's on your mind right now?" rows="2"
-            name="body" id="postBox"></textarea>`);
-            // TO DO: put replace/ rerender call here (e.g. wall page with updated post
-            // window.location.replace("http://localhost:3000/index.html")
-        }).catch(() => {
-        });
-    });
 }
 
+// axios call to post something on the wall
+async function postWallPost(text) {
+    const result = await axios({
+        method: 'post',
+        url: `http://localhost:3000/public/wallposts/${Date.now()}`,
+        data: {
+            data: {
+                text: text,
+            }
+        },
+    });
+    return result;
+}
+
+// submit handler for posting something on the wall
+async function handleSubmitPostPress(event) {
+    // get input from textarea to post it 
+    const $tweetRoot = $('#tweetStream');
+    let $postBox = $('#postBox');
+    const $form = $('#tweetForm');
+    $form.submit(async function (e) {
+        e.preventDefault();
+        const dataFromForm = $form.serializeArray().reduce((accumulator, x) => {
+            accumulator[x.name] = x.value;
+            return accumulator;
+
+        }, {});
+        // call post function
+        const response = await postWallPost(dataFromForm.data);
+        // rerender whole wallpage
+        return handleRenderWall();
+
+        /*
+        For now, adding only the posted post doesn't work due to a bug, hence, we reload the whole wall for now. Please keep below code for later.
+
+        let id = response.data.result.path.split(".")[1]; 
+        $postBox.replaceWith(`<textarea class="form-control" placeholder="Share with us what's on your mind right now?" rows="2"
+        name="data" id="postBox"></textarea>`);
+        const posted = await getWallPost(id);   
+        return $tweetRoot.prepend(renderWallPost(posted, id));*/
+    });
+
+}
 
 // call to get wallposts
 async function getWallPosts() {
@@ -397,8 +415,20 @@ async function getWallPosts() {
         method: 'get',
         url: 'http://localhost:3000/public/wallposts',
     });
-    return result.data.posts;
+    return result.data.result;
 };
+
+
+// call to get specific wallpost
+async function getWallPost(id) {
+    const result = await axios({
+        method: 'get',
+        url: `http://localhost:3000/public/wallposts/${id}`,
+    });
+    console.log(result.data.result);
+    return result.data.result;
+};
+
 
 
 // render group page
@@ -473,8 +503,8 @@ function renderStudentPage() {
         
         </div>`)
 
-        $("#students").append(renderOwnStudentCard());
-        //$("#students").append(renderOwnEditStudentCard());
+    $("#students").append(renderOwnStudentCard());
+    //$("#students").append(renderOwnEditStudentCard());
 
     // async function to get all the students and render student cards individually using renderStudentCard(student)
 
@@ -508,17 +538,17 @@ function renderOwnStudentCard(student) {
 }
 
 
-function handleEditOwnCard(event){
+function handleEditOwnCard(event) {
     $("#ownCard").remove();
     $('#students').prepend(renderOwnEditStudentCard());
 }
 
-function handleCancelEditOwnCard(event){
+function handleCancelEditOwnCard(event) {
     $("#ownCard").remove();
     $('#students').prepend(renderOwnStudentCard());
 }
 
-function renderOwnEditStudentCard(student){
+function renderOwnEditStudentCard(student) {
     // need logged in user information to pre fill all the values
     // eg. <input class="input" type="text" value="${hero.firstSeen}" name="firstSeen">
 
@@ -629,6 +659,7 @@ function handleRenderStudentPage() {
 // function that is called after click on logout button
 function handleLogout() {
     localStorage.removeItem('jwt');
+    localStorage.removeItem('name');
     $('#loggedIn').hide();
     $('#groupsDiv').hide();
     $('#studentsDiv').hide();
