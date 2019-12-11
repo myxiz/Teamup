@@ -1,43 +1,8 @@
 {
   "groups": {
-    "Team434": {
-      "groupOwner": "Bolin",
-      "groupMembers": [
-        "Bolin",
-        "Alberto",
-        "Max",
-        "Molly"
-      ],
-      "groupCapacity": 4
-    },
-    "Team435": {
-      "groupOwner": "Bolin",
-      "groupMembers": [
-        "Bolin",
-        "Alberto",
-        "Max",
-        "Molly"
-      ],
-      "groupCapacity": 4
-    },
-    "Team437": {
-      "groupOwner": "Bolin",
-      "groupMembers": [
-        "Alberto",
-        "Max",
-        "Molly"
-      ],
-      "groupCapacity": 4
-    }
+    
   },
   "users": {
-    "rrer": {
-      "email": "mabarth@live.unc.edu",
-      "gender": "Choose...",
-      "year": "Junior",
-      "bio": "re",
-      "major": "re"
-    },
     "bolinzz": {
       "email": "bolin.zhu123@gmail.com",
       "gender": "Male",
