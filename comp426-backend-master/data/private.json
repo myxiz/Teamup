@@ -7,6 +7,14 @@
       "bio": "Born and raised in North Carolina! Looking solve some real world problems.",
       "major": "Economics",
       "skills": "Java, Data Structure and Algorithms."
+    },
+    "bolinzz": {
+      "email": "bolin.zhu123@gmail.com",
+      "gender": "Male",
+      "year": "Junior",
+      "bio": "I am an exchange student from Singapore. I am interested in improving decision making process using various IT-driven tools, software and techniques.",
+      "major": "Business Analytics",
+      "skills": "Python and machine learning. "
     }
   }
 }

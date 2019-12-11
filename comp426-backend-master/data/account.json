@@ -2,6 +2,9 @@
   "users": {
     "joshe": {
       "passwordHash": "$2b$10$dLI0.opWHOfDmaXVp09S1.ZM8gp9NgTcujCqQHwybrnKZv84rL3De"
+    },
+    "bolinzz": {
+      "passwordHash": "$2b$10$UitzGC.3xRUnAiM38bd7X.mXcXYZvXdA7rlIw.uOWNzvJQgSJbeU6"
     }
   }
 }
