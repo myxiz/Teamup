@@ -1,3 +1,7 @@
 {
-  
+  "users": {
+    "bolinzz": {
+      "passwordHash": "$2b$10$k8FKswoG6I8J.zyPWuux0O5nPySzFEu9Ull4jkqfiKoLi//kEQPpW"
+    }
+  }
 }
