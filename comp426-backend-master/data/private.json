@@ -1,49 +1,12 @@
 {
-  "groups": {
-    "Team434": {
-      "groupOwner": "Bolin",
-      "groupMembers": [
-        "Bolin",
-        "Alberto",
-        "Max",
-        "Molly"
-      ],
-      "groupCapacity": 4
-    },
-    "Team435": {
-      "groupOwner": "Bolin",
-      "groupMembers": [
-        "Bolin",
-        "Alberto",
-        "Max",
-        "Molly"
-      ],
-      "groupCapacity": 4
-    },
-    "Team437": {
-      "groupOwner": "Bolin",
-      "groupMembers": [
-        "Alberto",
-        "Max",
-        "Molly"
-      ],
-      "groupCapacity": 4
-    }
-  },
   "users": {
-    "rrer": {
-      "email": "mabarth@live.unc.edu",
-      "gender": "Choose...",
-      "year": "Junior",
-      "bio": "re",
-      "major": "re"
-    },
-    "mabarth": {
-      "email": "mabarth@live.unc.edu",
+    "joshe": {
+      "email": "joshevans@gmail.com",
       "gender": "Male",
-      "year": "Junior",
-      "bio": "Hello I am a student from Germany",
-      "major": "Computer Science"
+      "year": "Senior",
+      "bio": "Born and raised in North Carolina! Looking solve some real world problems.",
+      "major": "Economics",
+      "skills": "Java, Data Structure and Algorithms."
     }
   }
 }

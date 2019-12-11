@@ -193,6 +193,13 @@ function renderSignUpPage() {
                 <textarea class="form-control" rows="2" id="bio" type= "textarea" name="bio"></textarea>
             <small class="form-text text-muted">Be creative, be yourself ;)</small>
         </div>
+
+        <div class="form-group">
+        <label for="bio">Relevant skills</label>
+            <textarea class="form-control" rows="2" id="skills" type= "textarea" name="skills"></textarea>
+        <small class="form-text text-muted">Don't be shy to showcase yourself.</small>
+        </div>
+
         <div class="form-group">
         <label>Email address</label>
             <input type="email" class="form-control" name="email">
@@ -201,10 +208,10 @@ function renderSignUpPage() {
 
         <div class="form-group">
             <label>Create password</label>
-            <input class="form-control" type="password2" name="pass">
+            <input class="form-control" type="password" name="pass">
         </div> <!-- form-group end.// -->  
         <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block" id="signupButton"> Sign up  </button>
+            <button type="submit" class="btn btn-primary btn-block" id="signupButton">Sign up</button>
         </div> <!-- form-group// -->      
         <small class="text-muted">By clicking the 'Sign Up' button, you confirm that you accept our <br> Terms of use and Privacy Policy.</small>                                          
         <div class="field">
@@ -256,7 +263,7 @@ async function handleSignup(event) {
 async function accountDataCreate(data) {
     let $message = $('#message');
     axios
-        .post(`http://localhost:3000/private/users/${data.name}`, {
+        .post(`http://localhost:3000/private/users/${data.name.toLowerCase().split('.')}`, {
             data: {
                 'firstname': data.firstname,
                 'lastname': data.lastname,
@@ -264,7 +271,8 @@ async function accountDataCreate(data) {
                 'gender': data.gender,
                 'year': data.year,
                 'bio': data.bio,
-                'major': data.major
+                'major': data.major,
+                'skills': data.skills,
             }
         },
             { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } },
@@ -274,8 +282,7 @@ async function accountDataCreate(data) {
             console.log(err);
             $message.html('<span class="has-text-danger">Something went wrong when store the info.</span>');
         }
-        );
-
+        ).then();
 }
 
 // render wall of comments
@@ -493,11 +500,25 @@ function renderGroupCard(group) {
 }
 
 // render student page
-function renderUserPage() {
-    $("#studentPage").append(`<div class="background"></div>
+async function getUserData(name){
+    $.ajax({
+        url: `http://localhost:3000/private/users/${name}`,
+        type: 'GET',
+        headers:{ Authorization: `Bearer ${getToken()}` },
+    }).then((res)=>{
+        alert(res.result)
+    }
+        
+    )
+}
+
+
+async function renderUserPage() {
+    let uesrData = await getUserData(localStorage.getItem("name"));
+    $("#userPage").append(`<div class="background"></div>
     <div class="container">
     <p class="text">Team up with someone today!</p>
-        <div class="row" id="userPage">
+        <div class="row" id="userPageBody">
                
             <div class= "col" >
                 <div class = "card"  style="width: 40rem; margin-top:1rem">
@@ -534,8 +555,8 @@ function renderUserPage() {
        </div> 
     </div>`)
 
-    $("#userPage").prepend(renderOwnStudentCard());
-    //$("#students").append(renderOwnEditStudentCard());
+        $("#userPageBody").prepend(renderOwnStudentCard(uesrData));
+        //$("#students").append(renderOwnEditStudentCard());
 
     // async function to get all the students and render student cards individually using renderStudentCard(student)
 
@@ -769,8 +790,8 @@ function handleRenderUserPage() {
     $('#loggedIn').show();
     $('#groupsDiv').show();
     $('#studentsDiv').show();
-    $('#studentPage').empty();
-    $('#studentPage').append(renderUserPage());
+    $('#userPage').empty();
+    $('#userPage').append(renderUserPage());
 }
 
 // function that is called after click on logout button
@@ -780,6 +801,7 @@ function handleLogout() {
     $('#loggedIn').hide();
     $('#groupsDiv').hide();
     $('#studentsDiv').hide();
+    
     $('#homeDiv').show();
     handleRenderHome();
 }
