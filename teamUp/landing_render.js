@@ -134,7 +134,7 @@ async function logInRequest(data) {
 
 // render sign up page
 function renderSignUpPage() {
-    return  `
+    return `
     <br>
     <form  class="form-horizontal" role="form" id="signupForm" >
         <div class="form-row">
@@ -237,36 +237,38 @@ async function handleSignup(event) {
         url: 'http://localhost:3000/account/create',
         type: 'POST',
         data,
-        // xhrFields: {
-        //     withCredentials: true,
-        // },
-      }).then((res) => {
+    }).then((res) => {
         logInRequest(data);
         accountDataCreate(data);
-      }).catch((res) => {
+    }).catch((res) => {
         $message.html('<span class="has-text-danger">Something went wrong and you were not signed up.</span>');
-      }).then();
+    }).then();
 
 }
 
-async function accountDataCreate(data){
+async function accountDataCreate(data) {
     let $message = $('#message');
     axios
-    .post(`http://localhost:3000/private/users/${data.name}`, {data: {
-        'firstname': data.firstname,
-         'lastname': data.lastname,
-         'email':data.email,
-         'gender':data.gender, 
-         'year':data.year,
-         'bio' :data.bio,
-         'major':data.major} },
-         {headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` }},
-    )
-    .then(res => console.log(res))
-    .catch(err =>{ console.log(err) ;
-        $message.html('<span class="has-text-danger">Something went wrong when store the info.</span>');}
-    );
- 
+        .post(`http://localhost:3000/private/users/${data.name}`, {
+            data: {
+                'firstname': data.firstname,
+                'lastname': data.lastname,
+                'email': data.email,
+                'gender': data.gender,
+                'year': data.year,
+                'bio': data.bio,
+                'major': data.major
+            }
+        },
+            { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } },
+        )
+        .then(res => console.log(res))
+        .catch(err => {
+            console.log(err);
+            $message.html('<span class="has-text-danger">Something went wrong when store the info.</span>');
+        }
+        );
+
 }
 
 // render wall of comments
@@ -304,7 +306,7 @@ function renderWall() {
 </div>`
 }
 
-function renderWallPost(post){
+function renderWallPost(post) {
     let timeDiff = diff_minutes(Date.now(), new Date(post.data.date));
     return `
     <li class="media">
@@ -341,7 +343,7 @@ async function handleRenderWall(event) {
     // call getWallPosts function and forward result to renderPost function
     const posts = await getWallPosts();
     console.log(posts);
-    for(let i = 0; i < Object.keys(posts).length; i++){ 
+    for (let i = 0; i < Object.keys(posts).length; i++) {
         console.log(posts[i]);
         $('#tweetStream').prepend(renderWallPost(posts[i]));
     }
@@ -674,6 +676,9 @@ function handleRenderGroupPage() {
     $('#groupsDiv').show();
     $('#studentsDiv').show();
     $('#groupPage').append(renderGroupPage());
+
+    async
+
 }
 
 // function that is called once user clicks students in navbar
@@ -707,4 +712,29 @@ function diff_minutes(datenow, tweetTS) {
     let diff = (datenow - tweetTS) / 1000;
     diff /= 60;
     return Math.abs(Math.round(diff));
+}
+
+
+async function getStatus() {
+    try {
+        const result = await axios({
+            method: 'get',
+            headers: { Authorization: `Bearer ${getToken()}` },
+            url: 'http://localhost:3000/account/status',
+        });
+        return result.data;
+    } catch (error) {
+        return false;
+    }
+};
+
+
+const getToken = () => {
+    let token = localStorage.getItem('jwt');
+    return token;
+}
+
+const setToken = (jwtToken) => {
+    token = jwtToken;
+    localStorage.setItem('jwt', token);
 }
