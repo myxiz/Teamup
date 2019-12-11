@@ -75,7 +75,6 @@ router.post('/create', function (req, res) {
   const name =  req.body.name.toLowerCase().split('.')[0];
   const pass = req.body.pass;
 
-
   let user = accountStore.get(`users.${name}`);
   if (user) {
     res.status(401).send({msg: `User '${req.body.name}' is already a registered user.`});
@@ -90,7 +89,6 @@ router.post('/create', function (req, res) {
   });
 
 });
-
 
 async function checkUser(username, password) {
   const user = accountStore.get(`users.${username}`);
